@@ -80,8 +80,12 @@ puts "exercise 9"
 p h[:b]
 puts
 
-
 # 10. Add to this hash the key:value pair {e:5}
+
+puts "exercise 10"
+h[:e] = 5
+p h
+puts
 
 # 13. Remove all key:value pairs whose value is less than 3.5
 
