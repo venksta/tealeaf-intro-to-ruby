@@ -15,7 +15,6 @@ puts "exercise 1"
 a.each { |x| print x }
 puts
 puts
-
 # 2. Same as above, but only print out values greater than 5.
 
 puts "exercise 2"
@@ -29,7 +28,6 @@ puts "exercise 3"
 b = a.select { |x| x % 2 != 0 }
 p b
 puts
-puts
 
 # 4. Append "11" to the end of the array. Prepend "0" to the beginning.
 
@@ -38,7 +36,6 @@ b << 11
 p b
 b.unshift 0
 p b
-puts
 puts
 
 # 5. Get rid of "11". And append a "3".
@@ -57,7 +54,6 @@ puts "exercise 6"
 b.uniq! # destructive (changed array)
 p b
 puts
-puts
 
 # 7. What's the major difference between an Array and a Hash?
 
@@ -72,11 +68,18 @@ hash_18 = {:one => "uno", :two => "dos"}
 hash_19 = {one: "uno", two: "dos"}
 
 p hash_18 == hash_19
-p hash_18
+puts
 
 # Suppose you have a h = {a:1, b:2, c:3, d:4}
 
+h = {a:1, b:2, c:3, d:4}
+
 # 9. Get the value of key "b".
+
+puts "exercise 9"
+p h[:b]
+puts
+
 
 # 10. Add to this hash the key:value pair {e:5}
 
