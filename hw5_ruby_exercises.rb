@@ -89,6 +89,11 @@ puts
 
 # 13. Remove all key:value pairs whose value is less than 3.5
 
+puts "exercise 13"
+h.delete_if { |k,v| v < 3.5 }
+p hash_18
+puts
+
 # 14. Can hash values be arrays? Can you have an array of hashes? (give examples)
 
 # 15. Look at several Rails/Ruby online API sources and say which one your like best and why.
