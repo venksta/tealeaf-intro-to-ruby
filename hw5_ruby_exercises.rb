@@ -108,3 +108,6 @@ p d
 puts
 
 # 15. Look at several Rails/Ruby online API sources and say which one your like best and why.
+
+# For these exercises I just used http://www.ruby-doc.org/core-1.9.3/
+# Pretty much got everything I needed.
