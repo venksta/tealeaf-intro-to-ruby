@@ -7,18 +7,49 @@
 # http://www.ruby-doc.org/core-1.9.3/Array.html
 # http://www.ruby-doc.org/core-1.9.3/Hash.html
 
-
 a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # 1. Use the "each" method of Array to iterate over [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], and print out each value.
 
+puts "exercise 1"
+a.each { |x| print x }
+puts
+puts
+
 # 2. Same as above, but only print out values greater than 5.
+
+puts "exercise 2"
+a.each { |x| print x if x > 5 }
+puts
+puts
 
 # 3. Now, using the same array from #2, use the "select" method to extract all odd numbers into a new array.
 
+puts "exercise 3"
+b = a.select { |x| x % 2 != 0 }
+p b
+puts
+puts
+
 # 4. Append "11" to the end of the array. Prepend "0" to the beginning.
 
+puts "exercise 4"
+b << 11
+p b
+b.unshift 0
+p b
+puts
+puts
+
 # 5. Get rid of "11". And append a "3".
+
+puts "exercise 5"
+b.pop
+p b
+b.push 3
+p b
+puts
+puts
 
 # 6. Get rid of duplicates without specifically removing any one value. 
 
