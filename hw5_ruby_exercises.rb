@@ -11,27 +11,27 @@ a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # 1. Use the "each" method of Array to iterate over [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], and print out each value.
 
-puts "exercise 1"
+puts "Exercise 1"
 a.each { |x| print x }
 puts
 puts
 # 2. Same as above, but only print out values greater than 5.
 
-puts "exercise 2"
+puts "Exercise 2"
 a.each { |x| print x if x > 5 }
 puts
 puts
 
 # 3. Now, using the same array from #2, use the "select" method to extract all odd numbers into a new array.
 
-puts "exercise 3"
+puts "Exercise 3"
 b = a.select { |x| x % 2 != 0 }
 p b
 puts
 
 # 4. Append "11" to the end of the array. Prepend "0" to the beginning.
 
-puts "exercise 4"
+puts "Exercise 4"
 b << 11
 p b
 b.unshift 0
@@ -40,7 +40,7 @@ puts
 
 # 5. Get rid of "11". And append a "3".
 
-puts "exercise 5"
+puts "Exercise 5"
 b.pop
 p b
 b.push 3
@@ -50,7 +50,7 @@ puts
 
 # 6. Get rid of duplicates without specifically removing any one value.
 
-puts "exercise 6"
+puts "Exercise 6"
 b.uniq! # destructive (changed array)
 p b
 puts
@@ -63,7 +63,7 @@ puts
 
 # QUESTION FOR LS: You mean different symbol notations? Hashes are created practically the same way.
 
-puts "exercise 8"
+puts "Exercise 8"
 hash_18 = {:one => "uno", :two => "dos"}
 hash_19 = {one: "uno", two: "dos"}
 
@@ -76,24 +76,35 @@ h = {a:1, b:2, c:3, d:4}
 
 # 9. Get the value of key "b".
 
-puts "exercise 9"
+puts "Exercise 9"
 p h[:b]
 puts
 
 # 10. Add to this hash the key:value pair {e:5}
 
-puts "exercise 10"
+puts "Exercise 10"
 h[:e] = 5
 p h
 puts
 
 # 13. Remove all key:value pairs whose value is less than 3.5
 
-puts "exercise 13"
+puts "Exercise 13"
 h.delete_if { |k,v| v < 3.5 }
 p hash_18
 puts
 
 # 14. Can hash values be arrays? Can you have an array of hashes? (give examples)
+
+puts "Exercise 14"
+puts "Hash values can be arrays"
+c = {a:[1, 2,3], b:[4,5,6]}
+p c
+puts
+
+puts "Arrays can be composed of hashes"
+d = [{a:1, b:2}, {c:3, d:4}]
+p d
+puts
 
 # 15. Look at several Rails/Ruby online API sources and say which one your like best and why.
