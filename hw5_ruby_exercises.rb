@@ -61,7 +61,18 @@ puts
 
 # 7. What's the major difference between an Array and a Hash?
 
+# ANSWER: Arrays are ordered by an index. Hashes are ordered by way of key-value pairs on a order is insertion order basis.
+
 # 8. Create a Hash using both Ruby 1.8 and 1.9 syntax.
+
+# QUESTION FOR LS: You mean different symbol notations? Hashes are created practically the same way.
+
+puts "exercise 8"
+hash_18 = {:one => "uno", :two => "dos"}
+hash_19 = {one: "uno", two: "dos"}
+
+p hash_18 == hash_19
+p hash_18
 
 # Suppose you have a h = {a:1, b:2, c:3, d:4}
 
