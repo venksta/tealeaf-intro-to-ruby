@@ -51,7 +51,13 @@ p b
 puts
 puts
 
-# 6. Get rid of duplicates without specifically removing any one value. 
+# 6. Get rid of duplicates without specifically removing any one value.
+
+puts "exercise 6"
+b.uniq! # destructive (changed array)
+p b
+puts
+puts
 
 # 7. What's the major difference between an Array and a Hash?
 
