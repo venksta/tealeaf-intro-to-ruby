@@ -84,8 +84,7 @@ def value(hand)
 end
 
 def deal_card(deck, hand)
-  hand << deck.last
-  deck.pop
+  hand << deck.pop # Thanks Eric Sauter
 end
 
 def want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
