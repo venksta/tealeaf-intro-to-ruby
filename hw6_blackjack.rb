@@ -91,15 +91,6 @@ def deal_card(deck, hand)
   deck.pop
 end
 
-# checks if player wants to play again.
-def want_to_play_again
-  puts "JUST A TEST OF PLAY AGAIN METHOD"
-end
-
-#reboots all variables and starts the ball rolling again.
-def reboot
-end
-
 #TODO
 # Check whether player wants to hit or stay through input.
 # If wrong input from player, then it should just call itself with an error message.
@@ -182,6 +173,16 @@ deal_card play_deck, dealer_hand
 puts
 
 p player_hit_or_stay(play_deck, player_hand, dealer_hand)
+
+# checks if player wants to play again.
+def want_to_play_again
+  player_hand = []
+  dealer_hand = []
+end
+
+#reboots all variables and starts the ball rolling again.
+def reboot
+end
 
 
 
