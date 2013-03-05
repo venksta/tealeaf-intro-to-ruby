@@ -8,7 +8,6 @@
 player_hand  = []
 dealer_hand  = []
 deck         = (1..52).to_a
-deck_counter = 52
 
 def shuffle
   self.sort_by { rand }
@@ -61,6 +60,8 @@ end
 
 # maps every card to its suit and facial value
 #Yeah. DRY be damned. LOL.
+# aces = 1,14,27,40
+# suits = 11,12,13,24,25,26,37,38,39,50,51,52
 def cards(x)
   cards = []
   x.each do |card_number|
@@ -175,14 +176,7 @@ def cards(x)
   cards
 end
 
-# aces = 1,14,27,40
-# suits = 11,12,13,24,25,26,37,38,39,50,51,52
-
-# shuffle deck
-
 play_deck = deck.shuffle
-
-# deal two cards to player
 
 player_hand << deal_card(play_deck)
 player_hand << deal_card(play_deck)
@@ -190,12 +184,10 @@ player_hand << deal_card(play_deck)
 puts cards(player_hand)
 puts worth(player_hand)
 
-# deal two cards to dealer (one hidden)
-
 dealer_hand << deal_card(play_deck)
-puts cards(dealer_hand)
+puts "Dealer reveals a #{cards(dealer_hand).to_s}."
+puts "The other card is hidden."
 dealer_hand << deal_card(play_deck)
-puts worth(dealer_hand)
 
 # ask player whether "hit" or "stay"
 # if "hit" deal card to player until player "stays" or "busts"
@@ -211,12 +203,9 @@ while gets.chomp.downcase == "h"
     if worth(player_hand) > 21
       puts "You busted!"
       puts "YOU LOSE!!!"
-      break 
     end
   puts "Would you like to 'h'it or 's'tay?"
 end
-
-
 
 # dealer hits until his sum is higher than 17 and higher than the player.
 
