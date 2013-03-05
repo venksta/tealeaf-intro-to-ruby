@@ -181,12 +181,15 @@ play_deck = deck.shuffle
 player_hand << deal_card(play_deck)
 player_hand << deal_card(play_deck)
 
-puts cards(player_hand)
-puts worth(player_hand)
+puts
+puts "You are dealt: #{cards(player_hand)}."
+puts "Your current sum is #{worth(player_hand)}"
+puts
 
 dealer_hand << deal_card(play_deck)
-puts "Dealer reveals a #{cards(dealer_hand).to_s}."
+puts "Dealer reveals a #{cards(dealer_hand)}."
 puts "The other card is hidden."
+puts
 dealer_hand << deal_card(play_deck)
 
 # ask player whether "hit" or "stay"
