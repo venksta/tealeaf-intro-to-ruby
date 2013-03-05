@@ -88,7 +88,6 @@ def deal_card(deck, hand)
   deck.pop
 end
 
-# checks if player wants to play again.
 def want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   puts "Do you want to (p)lay again or (e)xit?"
   case gets.chomp.downcase
@@ -102,7 +101,6 @@ def want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   end
 end
 
-#reboots all variables and starts the ball rolling again.
 def reboot(player_hand, dealer_hand, play_deck, deck, player_name)
   player_hand = []
   dealer_hand = []
@@ -126,12 +124,8 @@ def reboot(player_hand, dealer_hand, play_deck, deck, player_name)
   puts
 
   player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
-
 end
 
-#TODO
-# Check whether player wants to hit or stay through input.
-# If wrong input from player, then it should just call itself with an error message.
 def player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
   puts "Would you like to (h)it or (s)tay?"
   case gets.chomp.downcase
@@ -156,12 +150,7 @@ def player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
   end
 end
 
-# Seems to work ok. Still keeping an eye out for this one.
-# ERROR KEEPS CROPPING UP
-# WHEN my value is 18 and dealer 14 a puts and then app dies.
-# SOMETHING WITH THOSE LAST ELSIFS BUT I CAN'T NAIL IT!
 def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name)
-
   if value_dealer > 21
     print_hand(dealer_hand)
     puts "DEALER BUSTED!"
@@ -178,7 +167,7 @@ def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, playe
   elsif value_dealer < value_player
     deal_card play_deck, dealer_hand
     dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
-  elsif value_dealer <= 17
+  elsif value_dealer <= 17 # Thanks Matthew Breeden for this temporal fix.
     deal_card play_deck, dealer_hand
     dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
   elsif value_dealer > value_player && value_dealer <= 21
