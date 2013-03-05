@@ -176,6 +176,19 @@ def cards(x)
   cards
 end
 
+def hit_or_stay
+  puts "Would you like to 'h'it or 's'tay?"
+  case gets.chomp.downcase
+  when 'h'
+    1
+  when 's'
+    2
+  else
+    puts "Please input 'h' or 's'."
+    hit_or_stay
+  end
+end
+
 play_deck = deck.shuffle
 
 player_hand << deal_card(play_deck)
@@ -195,29 +208,63 @@ dealer_hand << deal_card(play_deck)
 # ask player whether "hit" or "stay"
 # if "hit" deal card to player until player "stays" or "busts"
 # if player stays and doesn't bust then
-
-puts "Your current sum is #{worth(player_hand)}"
-puts "Would you like to 'h'it or 's'tay?"
-while gets.chomp.downcase == "h"
-  player_hand << deal_card(play_deck)
-  puts
-  puts cards(player_hand)
-  puts "Your current sum is #{worth(player_hand)}"
-    if worth(player_hand) > 21
-      puts "You busted!"
-      puts "YOU LOSE!!!"
-    end
-  puts "Would you like to 'h'it or 's'tay?"
-end
-
 # dealer hits until his sum is higher than 17 and higher than the player.
 
-while worth(dealer_hand) <= 17 || worth(dealer_hand) < worth(player_hand)
-  dealer_hand << deal_card(play_deck)
-  puts
-  puts cards(dealer_hand)
-    if worth(dealer_hand) > 21
-      puts "Dealer busted!"
-      puts "YOU WIN!!!"      
-    end
-end
+
+
+
+# if player_choice == "h"
+#   while player_choice == "h"
+#     player_hand << deal_card(play_deck)
+#     puts
+#     puts cards(player_hand)
+#     puts "Your current sum is #{worth(player_hand)}"
+#       if worth(player_hand) > 21
+#         puts "YOU BUSTED!"
+#         puts "YOU LOSE!!!"
+#         break
+#         # would you like to play again?
+#       end
+#     puts "Would you like to 'h'it or 's'tay?"
+#     player_choice = gets.chomp.downcase
+#   end
+# elsif player_choice == 's'
+
+#   puts "I do get to checking out what happens at stay"
+
+  # if worth(dealer_hand) == 21
+  #   puts "Dealer reveals a Black Jack!"
+  #   puts "YOU LOSE!"
+  # else
+  #   if worth(dealer_hand) < 17
+  #     while worth(dealer_hand) <= 17
+  #       dealer_hand << deal_card(play_deck)
+  #       puts
+  #       puts "Dealer cards are:"
+  #       puts cards(dealer_hand)
+  #     end
+  #   elsif worth(dealer_hand) >= 17 && worth(dealer_hand) < worth(player_hand)
+  #     while worth(dealer_hand) < worth(player_hand)
+  #       dealer_hand << deal_card(play_deck)
+  #       puts
+  #       puts "Dealer cards are:"
+  #       puts cards(dealer_hand)
+  #     end
+  #   elsif worth(dealer_hand) >= 17 && worth(dealer_hand) > worth(player_hand)
+  #       puts
+  #       puts "Dealer cards are:"
+  #       puts cards(dealer_hand)
+      
+  #   end
+    
+  # end
+  # while worth(dealer_hand) < 21
+  # dealer_hand << deal_card(play_deck)
+  # puts
+  # puts "Dealer cards are:"
+  # puts cards(dealer_hand)
+  #   if worth(dealer_hand) == 21
+  #     puts "DEALER WON! #{worth(dealer_hand)}"
+  #     puts "YOU LOST!!!"
+  #   end
+  # end
