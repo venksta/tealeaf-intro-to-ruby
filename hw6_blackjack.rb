@@ -178,7 +178,7 @@ def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, playe
   elsif value_dealer < value_player
     deal_card play_deck, dealer_hand
     dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
-  elsif value_dealer < 17
+  elsif value_dealer <= 17
     deal_card play_deck, dealer_hand
     dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
   elsif value_dealer > value_player && value_dealer <= 21
