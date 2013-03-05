@@ -2,9 +2,6 @@
 # Author: Alberto De Lucca
 # Exercise for Tealeaf Academy.
 
-# puts "What is your name?"
-# player_name = gets.chomp
-
 deck = [
 # Spades
 {:suit=>:spades, :face=>"A", :name=>"Ace of Spades", :value=>nil},
@@ -92,22 +89,21 @@ def deal_card(deck, hand)
 end
 
 # checks if player wants to play again.
-def want_to_play_again(player_hand, dealer_hand, play_deck, deck)
+def want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   puts "Do you want to (p)lay again or (e)xit?"
   case gets.chomp.downcase
   when "p"
-    reboot(player_hand, dealer_hand, play_deck, deck)
+    reboot(player_hand, dealer_hand, play_deck, deck, player_name)
   when "e"
     exit
   else
     puts "Please input 'p' or 'e'."
-    want_to_play_again
+    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   end
 end
 
-#TODO
 #reboots all variables and starts the ball rolling again.
-def reboot(player_hand, dealer_hand, play_deck, deck)
+def reboot(player_hand, dealer_hand, play_deck, deck, player_name)
   player_hand = []
   dealer_hand = []
   play_deck = []
@@ -118,7 +114,7 @@ def reboot(player_hand, dealer_hand, play_deck, deck)
   deal_card play_deck, player_hand
 
   puts
-  puts "PLAYER CARDS"
+  puts "#{player_name.upcase}'S CARDS"
   print_hand(player_hand)
   p value player_hand
   puts
@@ -129,14 +125,14 @@ def reboot(player_hand, dealer_hand, play_deck, deck)
   deal_card play_deck, dealer_hand
   puts
 
-  player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
+  player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
 
 end
 
 #TODO
 # Check whether player wants to hit or stay through input.
 # If wrong input from player, then it should just call itself with an error message.
-def player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
+def player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
   puts "Would you like to (h)it or (s)tay?"
   case gets.chomp.downcase
   when 'h'
@@ -145,47 +141,50 @@ def player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
     p value(player_hand)
     if value(player_hand) > 21
       puts "YOU BUSTED!"
-      want_to_play_again(player_hand, dealer_hand, play_deck, deck)
+      want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
     else
-      player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
+      player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
     end
   when 's'
     puts "Now's the turn of the dealer."
     print_hand(dealer_hand)
     puts
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck)
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
   else
-    puts "Please input 'h' or 's'."
-    player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
+    puts "Please input (h) or (s)."
+    player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
   end
 end
 
 # Seems to work ok. Still keeping an eye out for this one.
-def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck)
+# ERROR KEEPS CROPPING UP
+# WHEN my value is 18 and dealer 14 a puts and then app dies.
+# SOMETHING WITH THOSE LAST ELSIFS BUT I CAN'T NAIL IT!
+def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name)
 
   if value_dealer > 21
     print_hand(dealer_hand)
     puts "DEALER BUSTED!"
     puts "YOU WIN!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck)
+    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   elsif value_dealer == 21 && value_player != 21
     print_hand(dealer_hand)
     puts "DEALER WINS!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck)   
+    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)   
   elsif value_dealer == 21 && value_player == 21
     print_hand(dealer_hand)
     puts "YOU TIE WITH DEALER!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck)   
+    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)   
   elsif value_dealer < value_player
     deal_card play_deck, dealer_hand
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck)
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
   elsif value_dealer < 17
     deal_card play_deck, dealer_hand
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck)
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
   elsif value_dealer > value_player && value_dealer <= 21
     print_hand(dealer_hand)
     puts "DEALER WINS!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck)
+    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name)
   end
 end
 
@@ -193,6 +192,9 @@ def print_hand(hand)
   hand.each {|card| puts "#{card[:name]}"}
 end
 
+puts "What is your name?"
+
+player_name = gets.chomp
 player_hand = []
 dealer_hand = []
 play_deck   = []
@@ -203,7 +205,7 @@ deal_card play_deck, player_hand
 deal_card play_deck, player_hand
 
 puts
-puts "PLAYER CARDS"
+puts "#{player_name.upcase}'S CARDS"
 print_hand(player_hand)
 p value player_hand
 puts
@@ -214,4 +216,4 @@ print_hand(dealer_hand)
 deal_card play_deck, dealer_hand
 puts
 
-player_hit_or_stay(play_deck, player_hand, dealer_hand, deck)
+player_hit_or_stay(play_deck, player_hand, dealer_hand, deck, player_name)
