@@ -9,29 +9,8 @@ def shuffle
   self.sort_by { rand }
 end
 
-def hit?
-  puts "Would you like to 'h'it or 's'tay?"
-  if gets.chomps.downcase == "h"
-    true
-  elsif gets.chomp.downcase == "s"
-    false
-  else 
-    puts "Please input 'h' or 's'."
-  end
-end
-
-# TODO: want to add a method that deals one card at a time
-# def deal_card
-#   self.last
-#   self.pop
-# end
-
-# aces = 1,14,27,40
-# suits = 11,12,13,24,25,26,37,38,39,50,51,52
-
 def worth(x)
   sum = 0
-
   x.each do |x|
       if x == 2 || x == 15 || x == 28 || x == 41
         # worth 2
@@ -56,7 +35,6 @@ def worth(x)
         sum += 10
       end
   end
-
   x.each do |x|
     if x == 1 || x == 14 || x == 27 || x == 40 # Aces
       if sum <=10
@@ -66,10 +44,29 @@ def worth(x)
       end
     end
   end
-
   sum
-  
 end
+
+def hit?
+  puts "Your current sum is #{worth(player_hand)}"
+  puts "Would you like to 'h'it or 's'tay?"
+  if gets.chomps.downcase == "h"
+    true
+  elsif gets.chomp.downcase == "s"
+    false
+  else 
+    puts "Please input 'h' or 's'."
+  end
+end
+
+# TODO: want to add a method that deals one card at a time
+# def deal_card
+#   self.last
+#   self.pop
+# end
+
+# aces = 1,14,27,40
+# suits = 11,12,13,24,25,26,37,38,39,50,51,52
 
 player_hand  = []
 dealer_hand  = []
@@ -86,8 +83,8 @@ player_hand << play_deck.last
 play_deck.pop
 player_hand << play_deck.last
 play_deck.pop
+
 p player_hand
-p play_deck.length
 p worth(player_hand)
 
 # deal two cards to dealer (one hidden)
@@ -96,6 +93,7 @@ dealer_hand << play_deck.last
 play_deck.pop
 dealer_hand << play_deck.last
 play_deck.pop
+
 p dealer_hand
 p worth(dealer_hand)
 
