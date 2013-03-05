@@ -91,16 +91,69 @@ def deal_card(deck, hand)
   deck.pop
 end
 
-#TODO
-# Check whether player wants to hit or stay through input.
-# Should return true or false. 
-# If wrong input from player, then it should call itself.
-def player_hit_or_stay
+# checks if player wants to play again.
+def want_to_play_again
+  puts "JUST A TEST OF PLAY AGAIN METHOD"
 end
 
-# TODO
-# Checks whether dealer must hit or stay.
-def dealer_hit_or_stay(value_dealer, value_player)
+#reboots all variables and starts the ball rolling again.
+def reboot
+end
+
+#TODO
+# Check whether player wants to hit or stay through input.
+# If wrong input from player, then it should just call itself with an error message.
+def player_hit_or_stay(play_deck, player_hand, dealer_hand)
+  puts "Would you like to 'h'it or 's'tay?"
+  case gets.chomp.downcase
+  when 'h'
+    deal_card(play_deck, player_hand)
+    print_hand(player_hand)
+    p value(player_hand)
+    if value(player_hand) > 21
+      puts "YOU BUSTED!"
+      want_to_play_again
+    else
+      player_hit_or_stay(play_deck, player_hand, dealer_hand)
+    end
+  when 's'
+    puts "Now's the turn of the dealer."
+    print_hand(dealer_hand)
+    puts
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand)
+  else
+    puts "Please input 'h' or 's'."
+    player_hit_or_stay(play_deck, player_hand, dealer_hand)
+  end
+end
+
+# Seems to work ok. Still keeping an eye out for this one.
+def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand)
+
+  if value_dealer > 21
+    print_hand(dealer_hand)
+    puts "DEALER BUSTED!"
+    puts "YOU WIN!"
+    want_to_play_again
+  elsif value_dealer == 21 && value_player != 21
+    print_hand(dealer_hand)
+    puts "DEALER WINS!"
+    want_to_play_again   
+  elsif value_dealer == 21 && value_player == 21
+    print_hand(dealer_hand)
+    puts "YOU TIE WITH DEALER!"
+    want_to_play_again   
+  elsif value_dealer < 17
+    deal_card play_deck, dealer_hand
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand)
+  elsif value_dealer < value_player
+    deal_card play_deck, dealer_hand
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand)
+  elsif value_dealer > value_player && value_dealer <= 21
+    print_hand(dealer_hand)
+    puts "DEALER WINS!"
+    want_to_play_again
+  end
 end
 
 def print_hand(hand)
@@ -116,8 +169,20 @@ play_deck = shuffle(deck)
 deal_card play_deck, player_hand
 deal_card play_deck, player_hand
 
+puts
+puts "PLAYER CARDS"
 print_hand(player_hand)
 p value player_hand
+puts
+
+puts "DEALER CARDS"
+deal_card play_deck, dealer_hand
+print_hand(dealer_hand)
+deal_card play_deck, dealer_hand
+puts
+
+p player_hit_or_stay(play_deck, player_hand, dealer_hand)
+
 
 
 
