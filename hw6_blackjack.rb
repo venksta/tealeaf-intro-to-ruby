@@ -175,18 +175,6 @@ def cards(x)
   cards
 end
 
-def hit?
-  puts "Your current sum is #{worth(player_hand)}"
-  puts "Would you like to 'h'it or 's'tay?"
-  if gets.chomps.downcase == "h"
-    true
-  elsif gets.chomp.downcase == "s"
-    false
-  else 
-    puts "Please input 'h' or 's'."
-  end
-end
-
 # aces = 1,14,27,40
 # suits = 11,12,13,24,25,26,37,38,39,50,51,52
 
@@ -213,13 +201,31 @@ puts worth(dealer_hand)
 # if "hit" deal card to player until player "stays" or "busts"
 # if player stays and doesn't bust then
 
+puts "Your current sum is #{worth(player_hand)}"
+puts "Would you like to 'h'it or 's'tay?"
+while gets.chomp.downcase == "h"
+  player_hand << deal_card(play_deck)
+  puts
+  puts cards(player_hand)
+  puts "Your current sum is #{worth(player_hand)}"
+    if worth(player_hand) > 21
+      puts "You busted!"
+      puts "YOU LOSE!!!"
+      break 
+    end
+  puts "Would you like to 'h'it or 's'tay?"
+end
 
 
 
 # dealer hits until his sum is higher than 17 and higher than the player.
 
-# if dealer "busts" player wins.
-
-# if dealer sum is higher than the player, then player loses.
-
-# reshuffle deck and start again if player wishes to continue
+while worth(dealer_hand) <= 17 || worth(dealer_hand) < worth(player_hand)
+  dealer_hand << deal_card(play_deck)
+  puts
+  puts cards(dealer_hand)
+    if worth(dealer_hand) > 21
+      puts "Dealer busted!"
+      puts "YOU WIN!!!"      
+    end
+end
