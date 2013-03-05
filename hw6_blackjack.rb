@@ -59,11 +59,11 @@ def hit?
   end
 end
 
-# TODO: want to add a method that deals one card at a time
-# def deal_card
-#   self.last
-#   self.pop
-# end
+# deals a card and removes it from the deck
+def deal_card(x)
+  x.last
+  x.pop
+end
 
 # aces = 1,14,27,40
 # suits = 11,12,13,24,25,26,37,38,39,50,51,52
@@ -79,29 +79,25 @@ play_deck = deck.shuffle
 
 # deal two cards to player
 
-player_hand << play_deck.last
-play_deck.pop
-player_hand << play_deck.last
-play_deck.pop
+player_hand << deal_card(play_deck)
+player_hand << deal_card(play_deck)
 
 p player_hand
 p worth(player_hand)
 
 # deal two cards to dealer (one hidden)
 
-dealer_hand << play_deck.last
-play_deck.pop
-dealer_hand << play_deck.last
-play_deck.pop
-
+dealer_hand << deal_card(play_deck)
 p dealer_hand
+dealer_hand << deal_card(play_deck)
 p worth(dealer_hand)
 
 # ask player whether "hit" or "stay"
-
 # if "hit" deal card to player until player "stays" or "busts"
-
 # if player stays and doesn't bust then
+
+
+
 
 # dealer hits until his sum is higher than 17 and higher than the player.
 
