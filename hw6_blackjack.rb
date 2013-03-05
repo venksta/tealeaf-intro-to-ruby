@@ -1,28 +1,64 @@
 # Blackjack Game
 # Author: Alberto De Lucca
 # Exercise for Tealeaf Academy.
-# The new deck builder was written by Eric Sauter https://github.com/esauter5
 
-suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
- 
-deck = []
-card = {}
-
-suits.each do |suit|
-  ranks.each do |rank|
-    card = {}
-    card[:name] = "#{rank} of #{suit}"
-    if rank == "Jack" || rank = "Queen" || rank = "King"
-      card[:value] = 10
-    elsif rank == "Ace"
-      card[:value] = nil
-    else
-      card[:value] = rank.to_i
-    end
-    deck << card
-  end
-end
+deck = [
+# Spades
+{:suit=>:spades, :face=>"A", :name=>"Ace of Spades", :value=>nil},
+{:suit=>:spades, :face=>"2", :name=>"2 of Spades", :value=>2},
+{:suit=>:spades, :face=>"3", :name=>"3 of Spades", :value=>3},
+{:suit=>:spades, :face=>"4", :name=>"4 of Spades", :value=>4},
+{:suit=>:spades, :face=>"5", :name=>"5 of Spades", :value=>5},
+{:suit=>:spades, :face=>"6", :name=>"6 of Spades", :value=>6},
+{:suit=>:spades, :face=>"7", :name=>"7 of Spades", :value=>7},
+{:suit=>:spades, :face=>"8", :name=>"8 of Spades", :value=>8},
+{:suit=>:spades, :face=>"9", :name=>"9 of Spades", :value=>9},
+{:suit=>:spades, :face=>"10", :name=>"10 of Spades", :value=>10},
+{:suit=>:spades, :face=>"J", :name=>"Jack of Spades", :value=>10},
+{:suit=>:spades, :face=>"Q", :name=>"Queen of Spades", :value=>10},
+{:suit=>:spades, :face=>"K", :name=>"King of Spades", :value=>10},
+# Hearts
+{:suit=>:hearts, :face=>"A", :name=>"Ace of Hearts", :value=>nil},
+{:suit=>:hearts, :face=>"2", :name=>"2 of Hearts", :value=>2},
+{:suit=>:hearts, :face=>"3", :name=>"3 of Hearts", :value=>3},
+{:suit=>:hearts, :face=>"4", :name=>"4 of Hearts", :value=>4},
+{:suit=>:hearts, :face=>"5", :name=>"5 of Hearts", :value=>5},
+{:suit=>:hearts, :face=>"6", :name=>"6 of Hearts", :value=>6},
+{:suit=>:hearts, :face=>"7", :name=>"7 of Hearts", :value=>7},
+{:suit=>:hearts, :face=>"8", :name=>"8 of Hearts", :value=>8},
+{:suit=>:hearts, :face=>"9", :name=>"9 of Hearts", :value=>9},
+{:suit=>:hearts, :face=>"10", :name=>"10 of Hearts", :value=>10},
+{:suit=>:hearts, :face=>"J", :name=>"Jack of Hearts", :value=>10},
+{:suit=>:hearts, :face=>"Q", :name=>"Queen of Hearts", :value=>10},
+{:suit=>:hearts, :face=>"K", :name=>"King of Hearts", :value=>10},
+# Diamonds
+{:suit=>:diamonds, :face=>"A", :name=>"Ace of Diamonds", :value=>nil},
+{:suit=>:diamonds, :face=>"2", :name=>"2 of Diamonds", :value=>2},
+{:suit=>:diamonds, :face=>"3", :name=>"3 of Diamonds", :value=>3},
+{:suit=>:diamonds, :face=>"4", :name=>"4 of Diamonds", :value=>4},
+{:suit=>:diamonds, :face=>"5", :name=>"5 of Diamonds", :value=>5},
+{:suit=>:diamonds, :face=>"6", :name=>"6 of Diamonds", :value=>6},
+{:suit=>:diamonds, :face=>"7", :name=>"7 of Diamonds", :value=>7},
+{:suit=>:diamonds, :face=>"8", :name=>"8 of Diamonds", :value=>8},
+{:suit=>:diamonds, :face=>"9", :name=>"9 of Diamonds", :value=>9},
+{:suit=>:diamonds, :face=>"10", :name=>"10 of Diamonds", :value=>10},
+{:suit=>:diamonds, :face=>"J", :name=>"Jack of Diamonds", :value=>10},
+{:suit=>:diamonds, :face=>"Q", :name=>"Queen of Diamonds", :value=>10},
+{:suit=>:diamonds, :face=>"K", :name=>"King of Diamonds", :value=>10},
+# Clubs
+{:suit=>:clubs, :face=>"A", :name=>"Ace of Clubs", :value=>nil},
+{:suit=>:clubs, :face=>"2", :name=>"2 of Clubs", :value=>2},
+{:suit=>:clubs, :face=>"3", :name=>"3 of Clubs", :value=>3},
+{:suit=>:clubs, :face=>"4", :name=>"4 of Clubs", :value=>4},
+{:suit=>:clubs, :face=>"5", :name=>"5 of Clubs", :value=>5},
+{:suit=>:clubs, :face=>"6", :name=>"6 of Clubs", :value=>6},
+{:suit=>:clubs, :face=>"7", :name=>"7 of Clubs", :value=>7},
+{:suit=>:clubs, :face=>"8", :name=>"8 of Clubs", :value=>8},
+{:suit=>:clubs, :face=>"9", :name=>"9 of Clubs", :value=>9},
+{:suit=>:clubs, :face=>"10", :name=>"10 of Clubs", :value=>10},
+{:suit=>:clubs, :face=>"J", :name=>"Jack of Clubs", :value=>10},
+{:suit=>:clubs, :face=>"Q", :name=>"Queen of Clubs", :value=>10},
+{:suit=>:clubs, :face=>"K", :name=>"King of Clubs", :value=>10},]
 
 def shuffle(deck)
   deck.sort_by {rand}
@@ -36,7 +72,7 @@ def value(hand)
     end
   end
   hand.each do |card|
-    if card[:value].nil? == true
+    if card[:face] == "A"
       if sum <=10
         sum += 11
       else
