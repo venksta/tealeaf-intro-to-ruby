@@ -107,6 +107,29 @@ end
 
 #reboots all variables and starts the ball rolling again.
 def reboot
+  player_hand = []
+  dealer_hand = []
+  play_deck   = []
+
+  play_deck = shuffle(deck)
+
+  deal_card play_deck, player_hand
+  deal_card play_deck, player_hand
+
+  puts
+  puts "PLAYER CARDS"
+  print_hand(player_hand)
+  p value player_hand
+  puts
+
+  puts "DEALER CARDS"
+  deal_card play_deck, dealer_hand
+  print_hand(dealer_hand)
+  deal_card play_deck, dealer_hand
+  puts
+
+  p player_hit_or_stay(play_deck, player_hand, dealer_hand)
+
 end
 
 #TODO
@@ -169,28 +192,28 @@ def print_hand(hand)
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-player_hand = []
-dealer_hand = []
-play_deck   = []
+# player_hand = []
+# dealer_hand = []
+# play_deck   = []
 
-play_deck = shuffle(deck)
+# play_deck = shuffle(deck)
 
-deal_card play_deck, player_hand
-deal_card play_deck, player_hand
+# deal_card play_deck, player_hand
+# deal_card play_deck, player_hand
 
-puts
-puts "PLAYER CARDS"
-print_hand(player_hand)
-p value player_hand
-puts
+# puts
+# puts "PLAYER CARDS"
+# print_hand(player_hand)
+# p value player_hand
+# puts
 
-puts "DEALER CARDS"
-deal_card play_deck, dealer_hand
-print_hand(dealer_hand)
-deal_card play_deck, dealer_hand
-puts
+# puts "DEALER CARDS"
+# deal_card play_deck, dealer_hand
+# print_hand(dealer_hand)
+# deal_card play_deck, dealer_hand
+# puts
 
-p player_hit_or_stay(play_deck, player_hand, dealer_hand)
+# p player_hit_or_stay(play_deck, player_hand, dealer_hand)
 
 
 
