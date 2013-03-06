@@ -82,7 +82,7 @@ def player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, d
   end
 end
 
-# TODO - THIS METHOD IS FAILING YET
+# TODO - IF GAME REACHES THIS METHOD, IT FAILS. CATASTROPHICAL.
 # TODO - REMOVE EXTRANEOUS PARENTHESES
 def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name, decks, suits, ranks)
   if value_dealer > 21
