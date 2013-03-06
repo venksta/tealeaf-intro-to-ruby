@@ -7,7 +7,7 @@
 # Eric Sauter https://github.com/esauter5
 
 def build deck, suits, ranks
-  suits.each do |suit|
+   suits.each do |suit|
     ranks.each do |rank|
       card = {}
       card[:name] = "#{rank} of #{suit}"
@@ -95,7 +95,6 @@ def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, playe
       else
         print_hand(dealer_hand)
         puts "DEALER BUSTED!"
-        puts "YOU WIN!"
         want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks) 
       end
     else
