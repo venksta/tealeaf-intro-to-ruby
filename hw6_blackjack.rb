@@ -2,6 +2,7 @@
 # Author: Alberto De Lucca
 # Exercise for Tealeaf Academy.
 # The new deck builder was written by Eric Sauter https://github.com/esauter5
+# 
 
 suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
 ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
@@ -9,18 +10,20 @@ ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
 deck = []
 card = {}
 
-suits.each do |suit|
-  ranks.each do |rank|
-    card = {}
-    card[:name] = "#{rank} of #{suit}"
-    if rank == "Jack" || rank = "Queen" || rank = "King"
-      card[:value] = 10
-    elsif rank == "Ace"
-      card[:value] = nil
-    else
-      card[:value] = rank.to_i
+def build(deck)
+  suits.each do |suit|
+    ranks.each do |rank|
+      card = {}
+      card[:name] = "#{rank} of #{suit}"
+      if rank == "Jack" || rank = "Queen" || rank = "King"
+        card[:value] = 10
+      elsif rank == "Ace"
+        card[:value] = nil
+      else
+        card[:value] = rank.to_i
+      end
+      deck << card
     end
-    deck << card
   end
 end
 
