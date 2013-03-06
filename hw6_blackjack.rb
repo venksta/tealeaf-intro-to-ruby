@@ -4,13 +4,7 @@
 # The new deck builder was written by Eric Sauter https://github.com/esauter5
 # 
 
-suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
- 
-deck = []
-card = {}
-
-def build(deck)
+def build(deck, suits, ranks)
   suits.each do |suit|
     ranks.each do |rank|
       card = {}
@@ -25,6 +19,11 @@ def build(deck)
       deck << card
     end
   end
+end
+
+def number_of_in_play(decks, deck, suits, ranks)
+  deck = (decks).times { build(deck, suits, ranks) }
+  deck
 end
 
 def shuffle(deck)
@@ -147,13 +146,21 @@ def print_hand(hand)
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-puts "What is your name?"
+suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
+ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
 
+puts "What is your name?"
 player_name = gets.chomp
+puts "How many decks would you like to play with?"
+decks = gets.chomp.to_i
+
+deck = []
+card = {}
 player_hand = []
 dealer_hand = []
 play_deck   = []
 
+number_of_in_play(decks, deck, suits, ranks)
 play_deck = shuffle(deck)
 
 deal_card play_deck, player_hand
