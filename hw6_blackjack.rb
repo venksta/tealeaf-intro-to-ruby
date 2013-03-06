@@ -3,15 +3,15 @@
 # Exercise for Tealeaf Academy.
 #
 # -with input from-
-# Eric Sauter https://github.com/esauter5
 # Matthew Breeden
+# Eric Sauter https://github.com/esauter5
 
 def build deck, suits, ranks
   suits.each do |suit|
     ranks.each do |rank|
       card = {}
       card[:name] = "#{rank} of #{suit}"
-      if rank == "Jack" || rank = "Queen" || rank = "King"
+      if rank == "Jack" || rank == "Queen" || rank == "King"
         card[:value] = 10
       elsif rank == "Ace"
         card[:value] = nil
@@ -82,32 +82,32 @@ def player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, d
   end
 end
 
-# TODO - IF GAME REACHES THIS METHOD, IT FAILS. CATASTROPHICAL.
-# TODO - REMOVE EXTRANEOUS PARENTHESES
 def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name, decks, suits, ranks)
-  if value_dealer > 21
-    print_hand(dealer_hand)
-    puts "DEALER BUSTED!"
-    puts "YOU WIN!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)
-  elsif value_dealer == 21 && value_player != 21
-    print_hand(dealer_hand)
-    puts "DEALER WINS!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)   
-  elsif value_dealer == 21 && value_player == 21
-    print_hand(dealer_hand)
-    puts "YOU TIE WITH DEALER!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)   
-  elsif value_dealer < value_player
+  if value_dealer < 17
     deal_card play_deck, dealer_hand
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
-  elsif value_dealer <= 17
-    deal_card play_deck, dealer_hand
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name)
-  elsif value_dealer > value_player && value_dealer <= 21
-    print_hand(dealer_hand)
-    puts "DEALER WINS!"
-    want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)
+    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name, decks, suits, ranks)
+  else
+    if value_dealer > value_player
+      if value_dealer <= 21
+        print_hand(dealer_hand)
+        puts "DEALER WINS!"
+        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)  
+      else
+        print_hand(dealer_hand)
+        puts "DEALER BUSTED!"
+        puts "YOU WIN!"
+        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks) 
+      end
+    else
+      if value_dealer == 21
+        print_hand(dealer_hand)
+        puts "YOU TIE WITH THE DEALER!"
+        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks)
+      else
+        deal_card play_deck, dealer_hand
+        dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name, decks, suits, ranks)
+      end
+    end
   end
 end
 
