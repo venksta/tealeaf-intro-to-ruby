@@ -3,7 +3,7 @@
 # Exercise for Tealeaf Academy.
 #
 # -with input from-
-# Matthew Breeden
+# Matthew Breeden https://github.com/mattt-
 # Eric Sauter https://github.com/esauter5
 
 def build deck, suits, ranks
