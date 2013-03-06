@@ -83,6 +83,7 @@ def player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, d
 end
 
 # TODO - THIS METHOD IS FAILING YET
+# TODO - REMOVE EXTRANEOUS PARENTHESES
 def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name, decks, suits, ranks)
   if value_dealer > 21
     print_hand(dealer_hand)
@@ -163,4 +164,3 @@ puts "How many decks would you like to play with?"
 decks = gets.chomp.to_i
 
 reboot player_hand, dealer_hand, play_deck, deck, player_name, decks, suits, ranks
-
