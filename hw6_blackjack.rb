@@ -6,7 +6,7 @@
 # Matthew Breeden https://github.com/mattt-
 # Eric Sauter https://github.com/esauter5
 
-def build deck
+def build(deck)
   suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
   ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
   suits.each do |suit|
@@ -25,11 +25,11 @@ def build deck
   end
 end
 
-def shuffle deck
+def shuffle(deck)
   deck.sort_by {rand}
 end
 
-def value hand
+def value(hand)
   sum = 0
   hand.each do |card|
     if card[:value].nil? == false
@@ -48,15 +48,15 @@ def value hand
   sum
 end
 
-def deal_card deck, hand
+def deal_card(deck, hand)
   hand << deck.pop
 end
 
-def print_hand hand
+def print_hand(hand)
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-def player_turn deck, player_hand, dealer_hand, player_name
+def player_turn(deck, player_hand, dealer_hand, player_name)
   print "Do you want to (h)it or (s)tay?> "
   case gets.chomp.downcase
   when 'h'
@@ -78,13 +78,13 @@ def player_turn deck, player_hand, dealer_hand, player_name
   end
 end
 
-def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name
+def dealer_turn(deck, value_dealer, value_player, player_hand, dealer_hand, player_name)
     print_hand dealer_hand
     puts
 
   if value_dealer < 17
     deal_card deck, dealer_hand
-    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+    dealer_turn(deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name)
   else
     if value_dealer > value_player
       if value_dealer <= 21
@@ -117,7 +117,7 @@ def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, play
   end
 end
 
-def want_to_play_again deck, player_hand, dealer_hand, player_name
+def want_to_play_again(deck, player_hand, dealer_hand, player_name)
   if $player_burse == 0
     exit_message
   end
@@ -221,7 +221,7 @@ def double_down?
   end
 end
 
-def reboot deck, player_hand, dealer_hand, player_name
+def reboot(deck, player_hand, dealer_hand, player_name)
   player_hand  = []
   dealer_hand  = []
   deck         = []
@@ -268,7 +268,7 @@ def reboot deck, player_hand, dealer_hand, player_name
     print_hand player_hand
     p value player_hand
     puts
-    dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name
+    dealer_turn(deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name)
     end
   end
 
