@@ -56,22 +56,6 @@ def print_hand hand
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-def surrender_turn?
-  print "Would you like to surrender your turn? y/n> "
-  case gets.chomp.downcase
-  when 'y'
-    puts "You surrender."
-    puts "You get back #{$bet/2} bitcoins."
-    $player_burse += ($bet/2)
-    return true
-  when 'n'
-    return false
-  else
-    puts "Please input (y) or (n)."
-    surrender deck, player_hand, dealer_hand, player_name
-  end
-end
-
 def player_turn deck, player_hand, dealer_hand, player_name
   print "Do you want to (h)it or (s)tay?> "
   case gets.chomp.downcase
@@ -106,13 +90,13 @@ def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, play
       if value_dealer <= 21
         puts "Dealer wins!"
         p value dealer_hand
-        puts "You lost #{$bet} bitcoins."
+        puts "You lost #{$bet} #{$bet == 1 ? "bitcoin" : "bitcoins"}."
         print_burse
         want_to_play_again deck, player_hand, dealer_hand, player_name
       else
         puts "Dealer busted!"
         p value dealer_hand
-        puts "You won #{$bet*2} bitcoins."
+        puts "You won #{$bet*2} #{$bet == 1 ? "bitcoin" : "bitcoins"}."
         $player_burse += $bet*2
         print_burse
         want_to_play_again deck, player_hand, dealer_hand, player_name
@@ -121,7 +105,7 @@ def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, play
       if value_dealer == 21
         p value dealer_hand
         puts "You tie with the dealer!"
-        puts "Your bet of #{$bet} bitcoins is returned to your burse."
+        puts "#{$bet/2} #{$bet == 1 ? "bitcoin" : "bitcoins"} is returned to your burse."
         $player_burse += $bet
         print_burse
         want_to_play_again deck, player_hand, dealer_hand, player_name
@@ -152,11 +136,10 @@ end
 def buy_bitcoins
   print "How many bitcoins will you buy from the dealer?> "
   $player_burse = gets.chomp.to_i
-  if $player_burse.class == Fixnum && $player_burse % 2 == 0
+  if $player_burse.class == Fixnum
     $player_burse
   else
     puts "Please enter the number of bitcoins you want."
-    puts "For now, these can only be even quantities."
     buy_bitcoins
   end
 end
@@ -165,7 +148,7 @@ def place_a
   print "\nHow many bitcoins do you want to bet?> "
   $bet = gets.chomp.to_i
 
-  if $bet % 2 == 0
+  if $bet.class == Fixnum
     if $player_burse - $bet < 0
       puts "Sorry! You don't have enough money to make that bet."
       puts "Please bet #{$player_burse} bitcoins or lower."
@@ -176,13 +159,13 @@ def place_a
       print_burse
     end
   else
-    puts "SORRY! Only even numbered bets are allowed."
+    puts "SORRY! Only numbered bets are allowed."
     place_a
   end
 end
 
 def print_burse
-  puts "Your burse is #{$player_burse} bitcoins."
+  puts "Your burse is #{$player_burse} #{$player_burse == 1 ? "bitcoin" : "bitcoins"}."
 end
 
 def exit_message
@@ -203,6 +186,39 @@ def exit_message
     exit    
   end
 
+end
+
+def surrender_turn?
+  print "Would you like to surrender your turn? y/n> "
+  case gets.chomp.downcase
+  when 'y'
+    puts "You surrender."
+    puts "You get back #{$bet/2} bitcoins."
+    $player_burse += ($bet/2)
+    return true
+  when 'n'
+    return false
+  else
+    puts "Please input (y) or (n)."
+    surrender_turn?
+  end
+end
+
+def double_down?
+  print "Would you like to double down? y/n> "
+  case gets.chomp.downcase
+  when 'y'
+    puts "You double down your bet!"
+    puts "You will only get one additional card."
+    puts "Good luck!"
+    $player_burse -= ($bet)
+    return true
+  when 'n'
+    return false
+  else
+    puts "Please input (y) or (n)."
+    double_down?
+  end
 end
 
 def reboot deck, player_hand, dealer_hand, player_name
@@ -245,12 +261,25 @@ def reboot deck, player_hand, dealer_hand, player_name
     want_to_play_again deck, player_hand, dealer_hand, player_name
   end
   
+  if $player_burse >= $bet
+    double_down_flag = double_down?
+    if double_down_flag == true
+    deal_card deck, player_hand
+    print_hand player_hand
+    p value player_hand
+    puts
+    dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name
+    end
+  end
+
   surrender_flag = surrender_turn?
   if surrender_flag == true
     want_to_play_again deck, player_hand, dealer_hand, player_name
   else
     player_turn deck, player_hand, dealer_hand, player_name
   end
+
+  player_turn deck, player_hand, dealer_hand, player_name
 
 end
 
@@ -263,7 +292,6 @@ $bet          = 0
 system "clear"
 puts "WELCOME TO BITCOIN BLACKJACK!"
 puts "\n\nRULES"
-puts "No double-down or split."
 puts "Dealer Blackjack wins."
 puts "Dealer hand under 17 will always hit."
 puts "\nBet wisely.\n\n"
