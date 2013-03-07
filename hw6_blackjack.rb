@@ -65,7 +65,6 @@ def player_turn deck, player_hand, dealer_hand, player_name
     p value player_hand
     if value(player_hand) > 21
       puts "You busted!\n"
-      $player_burse -= $bet
       print_burse
       want_to_play_again deck, player_hand, dealer_hand, player_name
     else
@@ -120,23 +119,29 @@ end
 
 def want_to_play_again deck, player_hand, dealer_hand, player_name
   if $player_burse == 0
-    puts "\nYou've got no bitcoins left!"
-    puts "A security guard escorts you out of the table.\n"
-    puts "You vow to complain to management."
-    puts "Instead, you get blacklisted.\n\n"
-    exit
+    exit_message
   end
   print "Do you want to (P)lay again or (E)xit?> "
   case gets.chomp.downcase
   when "p"
     reboot deck, player_hand, dealer_hand, player_name
   when "e"
-    puts "Thanks for playing!"
-    puts "You did great!"
-    exit
+    exit_message
   else
     puts "Please input (p) or (e)."
     want_to_play_again deck, player_hand, dealer_hand, player_name
+  end
+end
+
+def buy_bitcoins
+  print "\nHow many bitcoins will you buy from the dealer?> "
+  $player_burse = gets.chomp.to_i
+  if $player_burse.class == Fixnum && $player_burse % 2 == 0
+    $player_burse
+  else
+    puts "Please enter the number of bitcoins you want."
+    puts "For now, these can only be even quantities."
+    buy_bitcoins
   end
 end
 
@@ -148,7 +153,7 @@ def place_a
     if $player_burse - $bet < 0
       puts "Sorry! You don't have enough money to make that bet."
       puts "Please bet #{$player_burse} bitcoins or lower."
-      place_a 
+      place_a
     else
       puts "Bet accepted!"
       $player_burse -= $bet
@@ -162,6 +167,26 @@ end
 
 def print_burse
   puts "Your burse is #{$player_burse} bitcoins."
+end
+
+def exit_message
+  if $player_burse != 0
+    puts "Hope you had a great time playing!"
+    puts "Any suggestions for improvements?\n"
+    puts "If these were real bitcoins"
+    puts "you would've walked with roughly #{player_burse*35} USD!"
+    puts "Have you considered buying bitcoins?\n"
+    exit    
+  else
+    puts "\nYou've got no bitcoins left!"
+    puts "A security guard escorts you out of the table.\n"
+    puts "You vow to complain to management."
+    puts "Instead, you manage to get blacklisted.\n"
+    puts
+    puts "P.S: You should buy some bitcoins. For real.\n\n"
+    exit    
+  end
+
 end
 
 def reboot deck, player_hand, dealer_hand, player_name
@@ -212,19 +237,21 @@ end
 deck          = []
 player_hand   = []
 dealer_hand   = []
-$player_burse = 100
+$player_burse = 0
 $bet          = 0
 
 system "clear"
-puts "WELCOME TO BITCOIN BLACKJACK!\n\n"
-puts "You're starting with 100 bitcoins."
-puts "Bet wisely."
-puts "\nRULES"
+puts "Welcome to bitcoin blackjack!\n\n".capitalize
+puts "RULES"
 puts "No double-down, split or surrender."
 puts "Dealer Blackjack wins."
 puts "Dealer hand under 17 will always hit."
+puts "\nBet wisely.\n\n"
 
-print "\nWHAT IS YOUR NAME?> ".capitalize
+print "WHAT IS YOUR NAME?> ".capitalize
 player_name = gets.chomp
 
-reboot deck, player_hand, dealer_hand, player_name
+buy_bitcoins
+
+reboot deck, player_hand, dealer_hand, player_name # starts the actual game
+
