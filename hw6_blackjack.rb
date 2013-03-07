@@ -11,7 +11,7 @@ def build deck
   suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
   ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
 
-   suits.each do |suit|
+  suits.each do |suit|
     ranks.each do |rank|
       card = {}
       card[:name] = "#{rank} of #{suit}"
@@ -25,10 +25,6 @@ def build deck
       deck << card
     end
   end
-end
-
-def number_of_in_play decks, deck
-  decks.times { build deck }
 end
 
 def shuffle deck
@@ -59,84 +55,85 @@ def deal_card deck, hand
 end
 
 def print_hand hand
+  puts
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-def player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, decks
-  puts "Would you like to (H)it or (S)tay?"
+def player_turn deck, player_hand, dealer_hand, player_name
+  if value(player_hand) == 21
+    puts "BLACKJACK! YOU WIN!\n"
+    want_to_play_again deck, player_hand, dealer_hand, player_name
+  end
+  print "Would you like to (H)it or (S)tay?> "
   case gets.chomp.downcase
   when 'h'
-    deal_card play_deck, player_hand
+    deal_card deck, player_hand
     print_hand player_hand
     p value player_hand
     if value(player_hand) > 21
-      puts "YOU BUSTED!"
-      want_to_play_again player_hand, dealer_hand, play_deck, deck, player_name, decks
+      puts "YOU BUSTED!\n"
+      want_to_play_again deck, player_hand, dealer_hand, player_name
     else
-      player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, decks
+      player_turn deck, player_hand, dealer_hand, player_name
     end
   when 's'
-    puts "Now's the turn of the dealer."
-    print_hand dealer_hand
-    puts
-    dealer_hit_or_stay value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name, decks
+    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
   else
     puts "Please input (h) or (s)."
-    player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, decks
+    player_turn deck, player_hand, dealer_hand, player_name
   end
 end
 
-def dealer_hit_or_stay(value_dealer, value_player, play_deck, dealer_hand, player_hand, deck, player_name, decks)
+def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name
+    print_hand dealer_hand
   if value_dealer < 17
-    deal_card play_deck, dealer_hand
-    dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name, decks)
+    deal_card deck, dealer_hand
+    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
   else
     if value_dealer > value_player
       if value_dealer <= 21
-        print_hand(dealer_hand)
         puts "DEALER WINS!"
-        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks)  
+        want_to_play_again deck, player_hand, dealer_hand, player_name  
       else
-        print_hand(dealer_hand)
         puts "DEALER BUSTED!"
-        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks) 
+        want_to_play_again deck, player_hand, dealer_hand, player_name 
       end
     else
       if value_dealer == 21
         print_hand(dealer_hand)
         puts "YOU TIE WITH THE DEALER!"
-        want_to_play_again(player_hand, dealer_hand, play_deck, deck, player_name, decks)
+        want_to_play_again deck, player_hand, dealer_hand, player_name
       else
-        deal_card play_deck, dealer_hand
-        dealer_hit_or_stay(value(dealer_hand), value(player_hand), play_deck, dealer_hand, player_hand, deck, player_name, decks)
+        deal_card deck, dealer_hand
+        dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
       end
     end
   end
 end
 
-def want_to_play_again player_hand, dealer_hand, play_deck, deck, player_name, decks
-  puts "Do you want to (P)lay again or (E)xit?"
+def want_to_play_again deck, player_hand, dealer_hand, player_name
+  print "Do you want to (P)lay again or (E)xit?> "
   case gets.chomp.downcase
   when "p"
-    reboot player_hand, dealer_hand, play_deck, deck, player_name, decks
+    reboot deck, player_hand, dealer_hand, player_name
   when "e"
+    puts "THANKS FOR PLAYING!/n"
     exit
   else
     puts "Please input (p) or (e)."
-    want_to_play_again player_hand, dealer_hand, play_deck, deck, player_name, decks
+    want_to_play_again deck, player_hand, dealer_hand, player_name
   end
 end
 
-def reboot player_hand, dealer_hand, play_deck, deck, player_name, decks
+def reboot deck, player_hand, dealer_hand, player_name
   player_hand = []
   dealer_hand = []
-  play_deck = []
+  deck        = []
+  
+  build deck
+  deck = shuffle deck
 
-  number_of_in_play decks, deck
-  play_deck = shuffle deck
-
-  deal_card play_deck, player_hand
-  deal_card play_deck, player_hand
+  2.times { deal_card deck, player_hand }
 
   puts
   puts "#{player_name.upcase}'S CARDS"
@@ -145,23 +142,25 @@ def reboot player_hand, dealer_hand, play_deck, deck, player_name, decks
   puts
 
   puts "DEALER CARDS"
-  deal_card play_deck, dealer_hand
+  deal_card deck, dealer_hand
   print_hand dealer_hand
-  deal_card play_deck, dealer_hand
+  puts "2ND CARD HIDDEN"
+  deal_card deck, dealer_hand
   puts
 
-  player_hit_or_stay play_deck, player_hand, dealer_hand, deck, player_name, decks
+  player_turn deck, player_hand, dealer_hand, player_name
 end
 
 deck        = []
-card        = {}
 player_hand = []
 dealer_hand = []
-play_deck   = []
+
+system "clear"
+
+puts "WELCOME TO BLACKJACK"
+puts
 
 puts "What is your name?"
 player_name = gets.chomp
-puts "How many decks would you like to play with?"
-decks = gets.chomp.to_i
 
-reboot player_hand, dealer_hand, play_deck, deck, player_name, decks
+reboot deck, player_hand, dealer_hand, player_name
