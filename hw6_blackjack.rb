@@ -7,10 +7,8 @@
 # Eric Sauter https://github.com/esauter5
 
 def build deck
-
   suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
   ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
-
   suits.each do |suit|
     ranks.each do |rank|
       card = {}
@@ -55,7 +53,6 @@ def deal_card deck, hand
 end
 
 def print_hand hand
-  puts
   hand.each {|card| puts "#{card[:name]}"}
 end
 
@@ -117,7 +114,7 @@ def want_to_play_again deck, player_hand, dealer_hand, player_name
   when "p"
     reboot deck, player_hand, dealer_hand, player_name
   when "e"
-    puts "THANKS FOR PLAYING!/n"
+    puts "THANKS FOR PLAYING!\n"
     exit
   else
     puts "Please input (p) or (e)."
@@ -156,9 +153,7 @@ player_hand = []
 dealer_hand = []
 
 system "clear"
-
-puts "WELCOME TO BLACKJACK"
-puts
+puts "WELCOME TO BLACKJACK\n\n"
 
 puts "What is your name?"
 player_name = gets.chomp
