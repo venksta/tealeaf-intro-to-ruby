@@ -300,6 +300,5 @@ print "What is your name?> "
 player_name = gets.chomp
 
 buy_bitcoins
-
-reboot deck, player_hand, dealer_hand, player_name # starts the actual game
+reboot deck, player_hand, dealer_hand, player_name
 
