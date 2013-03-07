@@ -56,11 +56,8 @@ def print_hand hand
   hand.each {|card| puts "#{card[:name]}"}
 end
 
-def player_turn deck, player_hand, dealer_hand, player_name
-  if value(player_hand) == 21
-    puts "BLACKJACK! YOU WIN!\n"
-    want_to_play_again deck, player_hand, dealer_hand, player_name
-  end
+def player_turn deck, player_hand, dealer_hand, player_name, bet, player_burse
+  p player_burse
   print "Would you like to (H)it or (S)tay?> "
   case gets.chomp.downcase
   when 'h'
@@ -69,69 +66,113 @@ def player_turn deck, player_hand, dealer_hand, player_name
     p value player_hand
     if value(player_hand) > 21
       puts "YOU BUSTED!\n"
-      want_to_play_again deck, player_hand, dealer_hand, player_name
+      player_burse -= bet
+      p player_burse
+      print_burse player_burse
+      want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
     else
-      player_turn deck, player_hand, dealer_hand, player_name
+      player_turn deck, player_hand, dealer_hand, player_name, bet, player_burse
     end
   when 's'
-    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name, bet, player_burse
   else
     puts "Please input (h) or (s)."
-    player_turn deck, player_hand, dealer_hand, player_name
+    player_turn deck, player_hand, dealer_hand, player_name, bet, player_burse
   end
 end
 
-def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name
+def dealer_turn deck, value_dealer, value_player, player_hand, dealer_hand, player_name, bet, player_burse
     print_hand dealer_hand
   if value_dealer < 17
     deal_card deck, dealer_hand
-    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name, bet, player_burse
   else
     if value_dealer > value_player
       if value_dealer <= 21
         puts "DEALER WINS!"
-        want_to_play_again deck, player_hand, dealer_hand, player_name  
+        puts "YOU LOST #{bet} BITCOINS."
+        player_burse -= bet
+        print_burse player_burse
+        want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
       else
         puts "DEALER BUSTED!"
-        want_to_play_again deck, player_hand, dealer_hand, player_name 
+        puts "YOU WON #{bet*2} BITCOINS."
+        player_burse = bet*2
+        print_burse player_burse
+        want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
       end
     else
       if value_dealer == 21
         print_hand(dealer_hand)
         puts "YOU TIE WITH THE DEALER!"
-        want_to_play_again deck, player_hand, dealer_hand, player_name
+        puts "YOUR BET OF #{bet} BITCOINS IS RETURNED."
+        player_burse += bet
+        print_burse player_burse
+        want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
       else
         deal_card deck, dealer_hand
-        dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+        dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name, bet, player_burse
       end
     end
   end
 end
 
-def want_to_play_again deck, player_hand, dealer_hand, player_name
+def want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
+  if player_burse == 0
+    puts "YOU'VE GOT NO BITCOINS LEFT!."
+    puts "SORRY! TIME TO LEAVE THE TABLE."
+    exit
+  end
   print "Do you want to (P)lay again or (E)xit?> "
   case gets.chomp.downcase
   when "p"
-    reboot deck, player_hand, dealer_hand, player_name
+    reboot deck, player_hand, dealer_hand, player_name, bet, player_burse
   when "e"
     puts "THANKS FOR PLAYING!\n"
     exit
   else
     puts "Please input (p) or (e)."
-    want_to_play_again deck, player_hand, dealer_hand, player_name
+    want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
   end
 end
 
-def reboot deck, player_hand, dealer_hand, player_name
-  player_hand = []
-  dealer_hand = []
-  deck        = []
+def place_a bet, player_burse
+  print "How many BITCOINS do you want to bet? >"
+  bet = gets.chomp.to_i
+
+  if bet % 2 == 0
+    if player_burse - bet < 0
+      puts "SORRY! YOU DON'T HAVE ENOUGH MONEY TO MAKE THAT BET."
+      place_a bet, player_burse 
+    else
+      puts "BET ACCEPTED!"
+      player_burse -= bet
+      bet
+    end
+  else
+    puts "SORRY! ONLY EVEN NUMBERED BETS ACCEPTED."
+    place_a bet, player_burse
+  end
+end
+
+def print_burse player_burse
+  puts "Your burse is #{player_burse} BITCOINS."
+end
+
+def reboot deck, player_hand, dealer_hand, player_name, bet, player_burse
+  player_hand  = []
+  dealer_hand  = []
+  deck         = []
+  player_burse = 100
+  bet          = 0
   
   build deck
   deck = shuffle deck
 
   2.times { deal_card deck, player_hand }
 
+  place_a bet, player_burse
+  
   puts
   puts "#{player_name.upcase}'S CARDS"
   print_hand player_hand
@@ -145,17 +186,34 @@ def reboot deck, player_hand, dealer_hand, player_name
   deal_card deck, dealer_hand
   puts
 
-  player_turn deck, player_hand, dealer_hand, player_name
+  if (value dealer_hand) == 21
+    puts "DEALER REVEALS BLACKJACK! YOU LOSE!\n"
+    print dealer_hand
+    player_burse -= bet
+    print_burse player_burse
+    want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
+  end
+  
+  if (value player_hand) == 21
+    puts "BLACKJACK! YOU WIN!\n"
+    player_burse += (bet * 1.50).to_i
+    p player_burse
+    print_burse player_burse
+    want_to_play_again deck, player_hand, dealer_hand, player_name, bet, player_burse
+  end
+
+  player_turn deck, player_hand, dealer_hand, player_name, bet, player_burse
+
 end
 
-deck        = []
-player_hand = []
-dealer_hand = []
+deck         = []
+player_hand  = []
+dealer_hand  = []
 
 system "clear"
-puts "WELCOME TO BLACKJACK\n\n"
+puts "WELCOME TO BITCOIN BLACKJACK\n\n"
 
-puts "What is your name?"
+puts "What is your NAME?"
 player_name = gets.chomp
 
-reboot deck, player_hand, dealer_hand, player_name
+reboot deck, player_hand, dealer_hand, player_name, bet, player_burse
