@@ -60,21 +60,21 @@ def player_turn(deck, player_hand, dealer_hand, player_name)
   print "Do you want to (h)it or (s)tay?> "
   case gets.chomp.downcase
   when 'h'
-    deal_card deck, player_hand
+    deal_card(deck, player_hand)
     print_hand player_hand
     p value player_hand
     if value(player_hand) > 21
       puts "You busted!\n"
       print_burse
-      want_to_play_again deck, player_hand, dealer_hand, player_name
+      want_to_play_again(deck, player_hand, dealer_hand, player_name)
     else
-      player_turn deck, player_hand, dealer_hand, player_name
+      player_turn(deck, player_hand, dealer_hand, player_name)
     end
   when 's'
-    dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+    dealer_turn(deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name)
   else
     puts "Please input (h) or (s)."
-    player_turn deck, player_hand, dealer_hand, player_name
+    player_turn(deck, player_hand, dealer_hand, player_name)
   end
 end
 
@@ -83,7 +83,7 @@ def dealer_turn(deck, value_dealer, value_player, player_hand, dealer_hand, play
     puts
 
   if value_dealer < 17
-    deal_card deck, dealer_hand
+    deal_card(deck, dealer_hand)
     dealer_turn(deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name)
   else
     if value_dealer > value_player
@@ -92,26 +92,26 @@ def dealer_turn(deck, value_dealer, value_player, player_hand, dealer_hand, play
         p value dealer_hand
         puts "You lost #{$bet} #{$bet == 1 ? "bitcoin" : "bitcoins"}."
         print_burse
-        want_to_play_again deck, player_hand, dealer_hand, player_name
+        want_to_play_again(deck, player_hand, dealer_hand, player_name)
       else
         puts "Dealer busted!"
         p value dealer_hand
         puts "You won #{$bet*2} #{$bet == 1 ? "bitcoin" : "bitcoins"}."
         $player_burse += $bet*2
         print_burse
-        want_to_play_again deck, player_hand, dealer_hand, player_name
+        want_to_play_again(deck, player_hand, dealer_hand, player_name)
       end
     else
       if value_dealer == 21
         p value dealer_hand
         puts "You tie with the dealer!"
-        puts "#{$bet/2} #{$bet == 1 ? "bitcoin" : "bitcoins"} is returned to your burse."
+        puts "#{$bet/2} #{$bet == 1 ? "bitcoin is" : "bitcoins are"} returned to your burse."
         $player_burse += $bet
         print_burse
-        want_to_play_again deck, player_hand, dealer_hand, player_name
+        want_to_play_again(deck, player_hand, dealer_hand, player_name)
       else
-        deal_card deck, dealer_hand
-        dealer_turn deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name
+        deal_card(deck, dealer_hand)
+        dealer_turn(deck, value(dealer_hand), value(player_hand), player_hand, dealer_hand, player_name)
       end
     end
   end
@@ -124,12 +124,12 @@ def want_to_play_again(deck, player_hand, dealer_hand, player_name)
   print "Do you want to (p)lay again or (e)xit?> "
   case gets.chomp.downcase
   when "p"
-    reboot deck, player_hand, dealer_hand, player_name
+    reboot(deck, player_hand, dealer_hand, player_name)
   when "e"
     exit_message
   else
     puts "Please input (p) or (e)."
-    want_to_play_again deck, player_hand, dealer_hand, player_name
+    want_to_play_again(deck, player_hand, dealer_hand, player_name)
   end
 end
 
@@ -144,7 +144,7 @@ def buy_bitcoins
   end
 end
 
-def place_a
+def place_a_bet
   print "\nHow many bitcoins do you want to bet?> "
   $bet = gets.chomp.to_i
 
@@ -152,7 +152,7 @@ def place_a
     if $player_burse - $bet < 0
       puts "Sorry! You don't have enough money to make that bet."
       puts "Please bet #{$player_burse} bitcoins or lower."
-      place_a
+      place_a_bet
     else
       puts "Bet accepted!"
       $player_burse -= $bet
@@ -160,7 +160,7 @@ def place_a
     end
   else
     puts "SORRY! Only numbered bets are allowed."
-    place_a
+    place_a_bet
   end
 end
 
@@ -229,10 +229,12 @@ def reboot(deck, player_hand, dealer_hand, player_name)
   build deck
   deck = shuffle deck
 
-  2.times { deal_card deck, player_hand }
+  deal_card(deck, player_hand)
+  deal_card deck, dealer_hand
+  deal_card(deck, player_hand)
 
   print_burse
-  place_a
+  place_a_bet
   
   puts
   puts "#{player_name.capitalize}'s cards"
@@ -241,7 +243,6 @@ def reboot(deck, player_hand, dealer_hand, player_name)
   puts
 
   puts "Dealer cards"
-  deal_card deck, dealer_hand
   print_hand dealer_hand
   puts "2nd card hidden"
   deal_card deck, dealer_hand
@@ -279,7 +280,7 @@ def reboot(deck, player_hand, dealer_hand, player_name)
     player_turn deck, player_hand, dealer_hand, player_name
   end
 
-  player_turn deck, player_hand, dealer_hand, player_name
+  player_turn(deck, player_hand, dealer_hand, player_name)
 
 end
 
