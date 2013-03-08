@@ -212,6 +212,7 @@ def double_down?
     puts "You will only get one additional card."
     puts "Good luck!"
     $player_burse -= ($bet)
+    $bet += $bet
     return true
   when 'n'
     return false
