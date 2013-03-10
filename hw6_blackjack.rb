@@ -7,15 +7,15 @@
 # Eric Sauter https://github.com/esauter5
 
 def build(deck)
-  suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-  ranks = %w{2 3 4 5 6 7 8 9 10 Jack Queen King Ace}
+  suits = [:Hearts, :Diamonds, :Spades, :Clubs]
+  ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, :Jack, :Queen, :King, :Ace]
   suits.each do |suit|
     ranks.each do |rank|
       card = {}
       card[:name] = "#{rank} of #{suit}"
-      if rank == "Jack" || rank == "Queen" || rank == "King"
+      if rank == :Jack || rank == :Queen || rank == :King
         card[:value] = 10
-      elsif rank == "Ace"
+      elsif rank == :Ace
         card[:value] = 1
       else
         card[:value] = rank.to_i
@@ -23,10 +23,6 @@ def build(deck)
       deck << card
     end
   end
-end
-
-def shuffle(deck)
-  deck.sort_by {rand}
 end
 
 def value(hand)
@@ -228,7 +224,7 @@ def reboot(deck, player_hand, dealer_hand, player_name)
   deck         = []
   
   build deck
-  deck = shuffle deck
+  deck.shuffle!
 
   deal_card(deck, player_hand)
   deal_card deck, dealer_hand
