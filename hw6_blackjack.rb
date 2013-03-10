@@ -136,7 +136,7 @@ end
 def buy_bitcoins
   print "How many bitcoins will you buy from the dealer?> "
   $player_burse = gets.chomp.to_i
-  if $player_burse.class == Fixnum
+  if $player_burse.class == Fixnum && $player_burse > 0
     $player_burse
   else
     puts "Please enter the number of bitcoins you want."
