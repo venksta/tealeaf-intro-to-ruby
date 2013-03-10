@@ -26,6 +26,8 @@ class Hand
   # inherit from Deck? true: A hand is a small deck attached to a player.
   # if hand value > 21 player loses
 
+  # a hand belongs to a player or dealer
+
   ### POSSIBLE METHODS ###
 
   # compute value of hand
@@ -36,6 +38,7 @@ end
 class Player
   # must have name
   # must have purse
+  # must bet in order to play a hand
 
   # can have multiple hands (after a split for example).
   # can "hit" (add a card to hand)
@@ -48,7 +51,6 @@ class Player
 
   # get name
   # get purse
-  # want to play again?
   # want to rebuy chips?
   # place a bet
 end
@@ -58,6 +60,7 @@ class Dealer
 
   # cannot have multiple hands.
   # does not need name.
+  # can log bets won
 end
 
 class Purse
@@ -69,8 +72,27 @@ end
 class Bet
   # inherit from Purse? A bet is a sub-purse attached to a player & hand.
   # must be < purse to be valid (players cannot bet what they don't have)
+  # a bet belongs to a player
+  # a dealer doesn't bet
 end
 
 class Round
   # one round includes a betting & playing turn of players & a turn of dealer.
+
+  # round starts
+  # a deck is created
+  # one card is dealt and shown to every player
+  # one card is dealt to the dealer but not shown
+  # one card is dealt and shown to every player
+  # one card is dealt and shown to the dealer
+  # each player hits, stays, splits, surrenders or doubles down
+  # each hand value is computed until player either stays or busts
+  # if player busts, he's out of the round
+  # when all players end their plays, dealer reveals hidden card
+  # if dealer's vale is < 17 dealer hits
+  # if dealer's value is >= 17 dealer stays
+  # if player's value is > dealer player wins
+  # if player's value is < dealer player loses
+  # if player's value == dealer's they tie
+  # round ends
 end
