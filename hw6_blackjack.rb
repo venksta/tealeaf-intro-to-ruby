@@ -16,7 +16,7 @@ def build(deck)
       if rank == "Jack" || rank == "Queen" || rank == "King"
         card[:value] = 10
       elsif rank == "Ace"
-        card[:value] = nil
+        card[:value] = 1
       else
         card[:value] = rank.to_i
       end
@@ -32,12 +32,12 @@ end
 def value(hand)
   sum = 0
   hand.each do |card|
-    if card[:value].nil? == false
+    if card[:value] != 1
       sum += card[:value]
     end
   end
   hand.each do |card|
-    if card[:value].nil? == true
+    if card[:value] == 1
       if sum <=10
         sum += 11
       else
