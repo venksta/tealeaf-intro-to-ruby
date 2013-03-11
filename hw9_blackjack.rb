@@ -44,17 +44,12 @@ p c.long_description
 
 class Deck
 
-  attr_accessor :deck
+  attr_reader :deck
 
   def initialize
-    suits = ["H", "D", "S", "C"]
     ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
-    @deck = []
-    suits.each do |suit|
-      ranks.each do |rank|
-        @deck << Card.new(suit, rank)
-      end
-    end
+    suits = ["H", "D", "S", "C"]
+    @deck = ranks.product(suits)
     deck.shuffle!
   end
 
