@@ -34,25 +34,42 @@ class Card
                 end
 
     "#{long_rank} of #{long_suit}"
-
   end
+
 end
 
 c = Card.new("5", "C")
 p c.short_description
 p c.long_description
 
-# class Deck
-#   # if deck is recreated after every turn, then one deck suffices.
-#   # must have 52 cards.
-#   # cannot have duplicates.
+class Deck
 
-#   # POSSIBLE METHODS
+  attr_accessor :deck
 
-#   # build a deck of 52 cards
-#   # shuffle deck
-#   # deal_a_card from Deck to Hand
-# end
+  def initialize
+    suits = ["H", "D", "S", "C"]
+    ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+    @deck = []
+    suits.each do |suit|
+      ranks.each do |rank|
+        @deck << Card.new(suit, rank)
+      end
+    end
+    deck.shuffle!
+  end
+
+  def deal_card
+    deck.pop
+  end
+
+end
+
+d = Deck.new
+p d.deck.length
+p d
+d.deal_card
+p d.deck.length
+p d
 
 # class Hand
 #   # inherit from Deck? true: A hand is a small deck attached to a player.
