@@ -13,11 +13,7 @@ class Card
     @suit = suit
   end
 
-  def short_description
-    "#{rank}#{suit}"
-  end
-
-  def long_description
+  def card_description
     long_rank = case rank
                 when "A" then "Ace"
                 when "J" then "Jack"
@@ -36,6 +32,9 @@ class Card
     "#{long_rank} of #{long_suit}"
   end
 
+  def to_s
+    card_description
+  end
 end
 
 class Deck
@@ -43,29 +42,48 @@ class Deck
   attr_reader :deck
 
   def initialize
-    ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
-    suits = ["H", "D", "S", "C"]
-    @deck = ranks.product(suits)
+    @deck = []
+    ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    suits = ['H', 'D', 'S', 'C']
+    ranks.each do |rank|
+      suits.each do |suit|
+        @deck << Card.new(rank, suit)    
+      end
+    end
     deck.shuffle!
   end
 
   def deal_card
-    # Only 'popping' the deck returns an Array instance.
-    # We need to create a Card instance if we wish to access Card methods.
-    card = deck.pop
-    suit = card.pop
-    rank = card.shift
-    Card.new(rank, suit)
+    deck.pop
   end
-
 end
 
-d = Deck.new
-p d.deck.length
-z = d.deal_card
-p z.long_description
-p z.short_description
-p z.class
+# class Hand
+
+#   attr_accessor :hand
+
+#   def initialize
+#     @hand = []
+#   end
+
+#   def is_busted?
+#     value > 21
+#   end
+
+#   # def show_hand
+#   #   hand.each {|card| puts card.long_description}
+#   # end
+#   # inherit from Deck? true: A hand is a small deck attached to a player.
+#   # if hand value > 21 player loses
+
+#   # a hand belongs to a player or dealer
+
+#   ### POSSIBLE METHODS ###
+
+#   # compute value of hand
+#   # print a hand
+#   # split the hand
+# end
 
 # class Player
 #   # must have name
@@ -94,20 +112,6 @@ p z.class
 #   # does not need name.
 #   # can log bets won
 # end
-
-# class Hand
-#   # inherit from Deck? true: A hand is a small deck attached to a player.
-#   # if hand value > 21 player loses
-
-#   # a hand belongs to a player or dealer
-
-#   ### POSSIBLE METHODS ###
-
-#   # compute value of hand
-#   # print a hand
-#   # split the hand
-# end
-
 # class Purse
 #   # attached to a player
 #   # must be > 0 for player to be in game.
@@ -140,4 +144,8 @@ p z.class
 #   # if player's value is < dealer player loses
 #   # if player's value == dealer's they tie
 #   # round ends
+# end
+
+# class Game
+  
 # end
