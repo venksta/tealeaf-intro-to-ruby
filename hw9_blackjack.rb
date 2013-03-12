@@ -14,7 +14,7 @@ class Card
   end
 
   def short_description
-    "#{rank.upcase}#{suit.upcase}"
+    "#{rank}#{suit}"
   end
 
   def long_description
@@ -38,10 +38,6 @@ class Card
 
 end
 
-c = Card.new("5", "C")
-p c.short_description
-p c.long_description
-
 class Deck
 
   attr_reader :deck
@@ -54,30 +50,22 @@ class Deck
   end
 
   def deal_card
-    deck.pop
+    # Only 'popping' the deck returns an Array instance.
+    # We need to create a Card instance if we wish to access Card methods.
+    card = deck.pop
+    suit = card.pop
+    rank = card.shift
+    Card.new(rank, suit)
   end
 
 end
 
 d = Deck.new
 p d.deck.length
-p d
-d.deal_card
-p d.deck.length
-p d
-
-# class Hand
-#   # inherit from Deck? true: A hand is a small deck attached to a player.
-#   # if hand value > 21 player loses
-
-#   # a hand belongs to a player or dealer
-
-#   ### POSSIBLE METHODS ###
-
-#   # compute value of hand
-#   # print a hand
-#   # split the hand
-# end
+z = d.deal_card
+p z.long_description
+p z.short_description
+p z.class
 
 # class Player
 #   # must have name
@@ -105,6 +93,19 @@ p d
 #   # cannot have multiple hands.
 #   # does not need name.
 #   # can log bets won
+# end
+
+# class Hand
+#   # inherit from Deck? true: A hand is a small deck attached to a player.
+#   # if hand value > 21 player loses
+
+#   # a hand belongs to a player or dealer
+
+#   ### POSSIBLE METHODS ###
+
+#   # compute value of hand
+#   # print a hand
+#   # split the hand
 # end
 
 # class Purse
