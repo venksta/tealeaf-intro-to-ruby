@@ -112,6 +112,7 @@ end
 #   # does not need name.
 #   # can log bets won
 # end
+
 # class Purse
 #   # attached to a player
 #   # must be > 0 for player to be in game.
