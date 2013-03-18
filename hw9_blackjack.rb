@@ -58,6 +58,69 @@ class Deck
   end
 end
 
+class Purse
+  attr_accessor :amount
+
+  def initialize(amount)
+    @amount = amount
+  end
+
+  def no_money?
+    amount <= 0 ? true : false
+  end
+
+  # def to_s
+  #   amount
+  # end
+
+  # def deduct_from(bet)
+  #   amount -= @bet
+  # end
+
+  # add to purse
+  # purse plus winning bet
+end
+
+class Bet
+  # class Bet
+  #   # must be < purse to be valid (players cannot bet what they don't have)
+  #   # a bet belongs to a player
+  #   # a dealer doesn't bet
+  # end
+  attr_accessor :bet, :player
+  def initialize(bet_quantity)
+    @bet = bet_quantity
+  end
+
+  def double
+    bet = bet * 2
+  end
+end
+
+class Player
+  attr_accessor :name, :purse, :bet
+  @@number_of_players = 0
+  def initialize(name, amount)
+    @name = name
+    @purse = Purse.new(amount)
+    @@number_of_players += 1
+  end
+  def how_many_players_playing
+    "#{@@number_of_players} #{@@number_of_players == 1 ? 'player' : 'players'} in play"
+  end
+  def make_a_bet(bet_amount)
+    @bet = Bet.new(bet_amount)
+    # purse.deduct_from(bet.bet)
+  end
+
+end
+
+player = Player.new('Alberto', 50)
+p player.purse
+p player.how_many_players_playing
+p player.purse.no_money?
+p player.make_a_bet(50)
+p player
 # class Hand
 
 #   attr_accessor :hand
@@ -113,18 +176,6 @@ end
 #   # can log bets won
 # end
 
-# class Purse
-#   # attached to a player
-#   # must be > 0 for player to be in game.
-#   # can be replenished
-# end
-
-# class Bet
-#   # inherit from Purse? A bet is a sub-purse attached to a player & hand.
-#   # must be < purse to be valid (players cannot bet what they don't have)
-#   # a bet belongs to a player
-#   # a dealer doesn't bet
-# end
 
 # class Round
 #   # one round includes a betting & playing turn of players & a turn of dealer.
