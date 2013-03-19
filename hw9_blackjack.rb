@@ -25,14 +25,12 @@ class Card
                 when "K" then "King"
                 else rank
                 end
-
     long_suit = case suit
                 when "H" then "Hearts"
                 when "S" then "Spades"
                 when "C" then "Clubs"
                 when "D" then "Diamonds"
                 end
-
     "#{long_rank} of #{long_suit}"
   end
 
@@ -60,7 +58,17 @@ class Deck
   def deal_card
     deck.pop
   end
+
+  def size
+    deck.size
+  end
 end
+
+deck = Deck.new
+p deck.size
+deck.deal_card
+p deck.size
+
 
 class Player
 
@@ -181,7 +189,7 @@ class Game
     puts "Up till #{MAX_PLAYERS_ALLOWED} can play)"
     print "How many players want to play?> "
     choice = gets.chomp
-    if choice.to_i != 0
+    if choice.to_i != 0 && choice.to_i <= MAX_PLAYERS_ALLOWED
       choice.to_i
     else
       puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
@@ -229,8 +237,6 @@ class Game
   #   exit game
 
 end
-game = Game.new
-game.create_players
 
 # class Bet
 
