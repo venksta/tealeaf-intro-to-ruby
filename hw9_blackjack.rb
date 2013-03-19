@@ -4,6 +4,10 @@
 # A rewrite of:
 # github.com/adeluccar/tealeaf-intro-to-ruby/blob/master/hw6_blackjack.rb
 
+BLACKJACK_WIN_MULTIPLE = 1.5
+PLAYER_WIN_MULTIPLE    = 2
+MAX_PLAYERS_ALLOWED    = 3
+
 class Card
 
   attr_accessor :rank, :suit
@@ -58,6 +62,75 @@ class Deck
   end
 end
 
+class Player
+
+  attr_accessor :name, :purse, :bet
+  @@number_of_players = 0
+
+  def initialize(name, starting_purse)
+    @name = name
+    @purse = Purse.new(starting_purse)
+    @@number_of_players += 1
+  end
+
+  def how_many_playing
+    "#{@@number_of_players} #{@@number_of_players == 1 ? 'player' : 'players'} in play"
+  end
+
+  def hit?
+    print "Do you want to (h)it or (s)tay?> "
+    case gets.chomp.downcase
+    when 'h'
+      true
+    when 's'
+      false
+    else
+      puts "Please input (h) or (s)."
+      self.hit?
+    end
+  end
+
+  def double_down?
+    print "Would you like to double down? y/n> "
+    case gets.chomp.downcase
+    when 'y'
+      true
+    when 'n'
+      false
+    else
+      puts "Please input (y) or (n)."
+      self.double_down?
+    end
+  end
+
+  def surrender?
+    print "Would you like to surrender your turn? y/n> "
+    case gets.chomp.downcase
+    when 'y'
+      true
+    when 'n'
+      false
+    else
+      puts "Please input (y) or (n)."
+      self.surrender?
+    end
+    
+  end
+
+  def play_again?
+    print "Do you want to (p)lay again or (e)xit?> "
+    case gets.chomp.downcase
+    when "p"
+      true
+    when "e"
+      false
+    else
+      puts "Please input (p) or (e)."
+      self.play_again?
+    end
+  end
+end
+
 class Purse
   attr_accessor :amount
 
@@ -73,54 +146,109 @@ class Purse
   #   amount
   # end
 
-  # def deduct_from(bet)
-  #   amount -= @bet
-  # end
+  def deduct(bet)
+    amount -= bet
+  end
 
   # add to purse
   # purse plus winning bet
 end
 
-class Bet
-  # class Bet
-  #   # must be < purse to be valid (players cannot bet what they don't have)
-  #   # a bet belongs to a player
-  #   # a dealer doesn't bet
-  # end
-  attr_accessor :bet, :player
-  def initialize(bet_quantity)
-    @bet = bet_quantity
-  end
 
-  def double
-    bet = bet * 2
-  end
-end
-
-class Player
-  attr_accessor :name, :purse, :bet
-  @@number_of_players = 0
-  def initialize(name, amount)
-    @name = name
-    @purse = Purse.new(amount)
-    @@number_of_players += 1
-  end
-  def how_many_players_playing
-    "#{@@number_of_players} #{@@number_of_players == 1 ? 'player' : 'players'} in play"
-  end
-  def make_a_bet(bet_amount)
-    @bet = Bet.new(bet_amount)
-    # purse.deduct_from(bet.bet)
-  end
-
-end
-
-player = Player.new('Alberto', 50)
-p player.purse
-p player.how_many_players_playing
+player = Player.new('Alberto', 0)
 p player.purse.no_money?
-p player.make_a_bet(50)
-p player
+
+
+class Game
+
+  attr_accessor :players, :purses, :rounds, :bets, :hands, :dealer
+
+  def initialize
+    @players = []
+  end
+
+  # welcome message
+  def welcome_message
+    system "clear"
+    puts "WELCOME TO BITCOIN BLACKJACK!"
+    puts "\n\nRULES"
+    puts "Dealer Blackjack wins."
+    puts "Dealer hand under 17 will always hit."
+    puts "\nBet wisely.\n\n"
+  end
+
+  def how_many_players
+    puts "Up till #{MAX_PLAYERS_ALLOWED} can play)"
+    print "How many players want to play?> "
+    choice = gets.chomp
+    if choice.to_i != 0
+      choice.to_i
+    else
+      puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
+      self.how_many_players
+   end
+  end
+
+  # instantiate players (with purses)
+  def create_players
+    how_many_players.times do |x|
+      print "Player #{x + 1}, what's your name?> "
+      name = gets.chomp.capitalize
+      print "#{name}, how much money would you like to start with?> "
+      purse = gets.chomp.to_i
+      if purse > 0
+        purse
+      else
+        puts "Please enter the number of chips you want."
+        self
+      end
+      players << Player.new(name, purse)
+    end
+    p players
+  end
+
+
+
+  # start a round
+  #   build deck
+  #   ask for player bet
+  #   deduct bet from player purse
+  #   deal hands
+  #   print player hand
+  #   print dealer hand (one card hidden)
+  #     loop player hit?
+  #           deal card
+  #   print dealer hand (complete)
+  #     loop dealer hit?
+  #           deal card
+  #   compare hands (determine winner)
+  #   show winning or losing message
+  #   add winnings to player purse
+  #   play again?
+  #     loop start a round
+  #   exit game
+
+end
+game = Game.new
+game.create_players
+
+# class Bet
+
+#   attr_accessor :bet
+
+#   def initialize(bet_quantity)
+#     @bet = bet_quantity
+#   end
+
+#   def valid?(purse)
+#     bet <= purse.amount ? true : false
+#   end
+
+#   def double
+#     bet *= 2
+#   end
+# end
+
 # class Hand
 
 #   attr_accessor :hand
