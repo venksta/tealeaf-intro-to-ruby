@@ -64,22 +64,81 @@ class Deck
   end
 end
 
-deck = Deck.new
-p deck.size
-deck.deal_card
-p deck.size
+class Purse
+  attr_accessor :amount
 
+  def initialize(amount)
+    @amount = amount
+  end
+
+  def no_money?
+    amount <= 0 ? true : false
+  end
+
+  # def to_s
+  #   amount
+  # end
+
+  def deduct(bet)
+    amount -= bet
+  end
+
+  # add to purse
+  # purse plus winning bet
+end
+
+module Hand
+
+  def total
+    sum = 0
+    hand.each do |card|
+      if card.rank != 'A'
+        if card.rank != 'J' && card.rank != 'Q' && card.rank != 'K'
+          sum += card.rank.to_i
+        else
+          sum += 10
+        end
+      end
+    end
+    hand.each do |card|
+      if card.rank == 'A'
+        if sum <= 10
+          sum += 11
+        else
+          sum += 1
+        end
+      end
+    end
+    sum
+  end
+
+  def show_hand
+    puts "#{name}'s Hand"
+    hand.each { |card| puts "#{card}" }
+    puts "Total: #{total}"
+  end
+
+  def add_card(new_card)
+    hand << new_card
+  end
+
+  def is_busted?
+    total > 21
+  end
+end
 
 class Player
 
-  attr_accessor :name, :purse, :bet
+  include Hand
+  attr_accessor :name, :purse, :bet, :hand
   @@number_of_players = 0
 
   def initialize(name, starting_purse)
     @name = name
     @purse = Purse.new(starting_purse)
+    @hand = []
     @@number_of_players += 1
-  end
+  end 
 
   def how_many_playing
     "#{@@number_of_players} #{@@number_of_players == 1 ? 'player' : 'players'} in play"
@@ -139,32 +198,25 @@ class Player
   end
 end
 
-class Purse
-  attr_accessor :amount
 
-  def initialize(amount)
-    @amount = amount
+class Dealer
+  include Hand
+  attr_accessor :name, :cards
+
+  def initialize
+    @name = "Dealer"
+    cards = []
   end
-
-  def no_money?
-    amount <= 0 ? true : false
-  end
-
-  # def to_s
-  #   amount
-  # end
-
-  def deduct(bet)
-    amount -= bet
-  end
-
-  # add to purse
-  # purse plus winning bet
 end
 
 
-player = Player.new('Alberto', 0)
-p player.purse.no_money?
+
+
+
+
+
+
+
 
 
 class Game
@@ -177,45 +229,43 @@ class Game
 
   # welcome message
   def welcome_message
-    system "clear"
-    puts "WELCOME TO BITCOIN BLACKJACK!"
-    puts "\n\nRULES"
-    puts "Dealer Blackjack wins."
-    puts "Dealer hand under 17 will always hit."
-    puts "\nBet wisely.\n\n"
+          # system "clear"
+          # puts "WELCOME TO BITCOIN BLACKJACK!"
+          # puts "\n\nRULES"
+          # puts "Dealer Blackjack wins."
+          # puts "Dealer hand under 17 will always hit."
+          # puts "\nBet wisely.\n\n"
   end
 
   def how_many_players
-    puts "Up till #{MAX_PLAYERS_ALLOWED} can play)"
-    print "How many players want to play?> "
-    choice = gets.chomp
-    if choice.to_i != 0 && choice.to_i <= MAX_PLAYERS_ALLOWED
-      choice.to_i
-    else
-      puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
-      self.how_many_players
-   end
+          # puts "Up till #{MAX_PLAYERS_ALLOWED} can play)"
+          # print "How many players want to play?> "
+          # choice = gets.chomp
+          # if choice.to_i != 0 && choice.to_i <= MAX_PLAYERS_ALLOWED
+          #   choice.to_i
+          # else
+          #   puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
+          #   self.how_many_players
+          # end
   end
 
   # instantiate players (with purses)
-  def create_players
-    how_many_players.times do |x|
-      print "Player #{x + 1}, what's your name?> "
-      name = gets.chomp.capitalize
-      print "#{name}, how much money would you like to start with?> "
-      purse = gets.chomp.to_i
-      if purse > 0
-        purse
-      else
-        puts "Please enter the number of chips you want."
-        self
-      end
-      players << Player.new(name, purse)
-    end
-    p players
-  end
-
-
+          # def create_players
+          #   how_many_players.times do |x|
+          #     print "Player #{x + 1}, what's your name?> "
+          #     name = gets.chomp.capitalize
+          #     print "#{name}, how much money would you like to start with?> "
+          #     purse = gets.chomp.to_i
+          #     if purse > 0
+          #       purse
+          #     else
+          #       puts "Please enter the number of chips you want."
+          #       self
+          #     end
+          #     players << Player.new(name, purse)
+          #   end
+          #   p players
+          # end
 
   # start a round
   #   build deck
