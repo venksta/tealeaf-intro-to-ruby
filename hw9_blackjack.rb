@@ -75,16 +75,14 @@ class Purse
     amount <= 0 ? true : false
   end
 
-  # def to_s
-  #   amount
-  # end
-
-  def deduct(bet)
-    amount -= bet
+  def to_s
+   "#{amount}"
   end
 
-  # add to purse
-  # purse plus winning bet
+  # def winnings
+  #   player.purse.amount -= player.bet
+  # end
+
 end
 
 module Hand
@@ -116,6 +114,7 @@ module Hand
     puts "#{name}'s Hand"
     hand.each { |card| puts "#{card}" }
     puts "Total: #{total}"
+    puts
   end
 
   def add_card(new_card)
@@ -134,9 +133,10 @@ class Player
   @@number_of_players = 0
 
   def initialize(name, starting_purse)
-    @name = name
+    @name  = name
     @purse = Purse.new(starting_purse)
-    @hand = []
+    @hand  = []
+    @bet   = nil
     @@number_of_players += 1
   end 
 
@@ -198,14 +198,20 @@ class Player
   end
 end
 
-
 class Dealer
   include Hand
-  attr_accessor :name, :cards
+  attr_accessor :name, :hand
 
   def initialize
     @name = "Dealer"
-    cards = []
+    @hand = []
+  end
+
+  def show_hidden_hand
+    puts "#{name}'s Hand"
+    puts "#{hand.first}"
+    puts "Second card is hidden."
+    puts
   end
 end
 
@@ -221,72 +227,141 @@ end
 
 class Game
 
-  attr_accessor :players, :purses, :rounds, :bets, :hands, :dealer
+  attr_accessor :player, :dealer, :deck, :players
 
   def initialize
+    @dealer  = Dealer.new
+    @deck    = Deck.new
     @players = []
   end
 
-  # welcome message
+  def start
+    # welcome_message #DONE
+    generate_players #DONE
+    # start a round #TODO
+    build_deck
+    place_a_bet #DONE
+    deal_hands #DONE
+    show_player_hands
+    #   print dealer hand (one card hidden)
+    #     loop player hit?
+    #           deal card
+    #   print dealer hand (complete)
+    #     loop dealer hit?
+    #           deal card
+    #   compare hands (determine winner)
+    #   show winning or losing message
+    #   add winnings to player purse
+    #   play again?
+    #     loop start a round
+    #   exit game
+    
+  end
+
   def welcome_message
-          # system "clear"
-          # puts "WELCOME TO BITCOIN BLACKJACK!"
-          # puts "\n\nRULES"
-          # puts "Dealer Blackjack wins."
-          # puts "Dealer hand under 17 will always hit."
-          # puts "\nBet wisely.\n\n"
+    system "clear"
+    puts "WELCOME TO BITCOIN BLACKJACK!"
+    puts "\nRULES"
+    puts "Dealer Blackjack wins."
+    puts "Dealer hand under 17 will always hit."
+    puts "Up till #{MAX_PLAYERS_ALLOWED} players can play."
+    puts "\nBet wisely.\n\n"
   end
 
   def how_many_players
-          # puts "Up till #{MAX_PLAYERS_ALLOWED} can play)"
-          # print "How many players want to play?> "
-          # choice = gets.chomp
-          # if choice.to_i != 0 && choice.to_i <= MAX_PLAYERS_ALLOWED
-          #   choice.to_i
-          # else
-          #   puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
-          #   self.how_many_players
-          # end
+    print "How many players want to play?> "
+    choice = gets.chomp
+    if choice.to_i != 0 && choice.to_i <= MAX_PLAYERS_ALLOWED
+      choice.to_i
+    else
+      puts "Please input a number between 1 and #{MAX_PLAYERS_ALLOWED}."
+      self.how_many_players
+    end
   end
 
-  # instantiate players (with purses)
-          # def create_players
-          #   how_many_players.times do |x|
-          #     print "Player #{x + 1}, what's your name?> "
-          #     name = gets.chomp.capitalize
-          #     print "#{name}, how much money would you like to start with?> "
-          #     purse = gets.chomp.to_i
-          #     if purse > 0
-          #       purse
-          #     else
-          #       puts "Please enter the number of chips you want."
-          #       self
-          #     end
-          #     players << Player.new(name, purse)
-          #   end
-          #   p players
-          # end
+  def generate_players
+    how_many_players.times do |x|
+      print "Player #{x + 1}, what's your name?> "
+      name = gets.chomp.capitalize
+      print "#{name}, how much money would you like to start with?> "
+      purse = gets.chomp.to_i
+      if purse > 0
+        purse
+      else
+        puts "Please enter the number of chips you want."
+        self
+      end
+      players << Player.new(name, purse)
+    end
+    p players
+  end
 
-  # start a round
-  #   build deck
-  #   ask for player bet
-  #   deduct bet from player purse
-  #   deal hands
-  #   print player hand
-  #   print dealer hand (one card hidden)
-  #     loop player hit?
-  #           deal card
-  #   print dealer hand (complete)
-  #     loop dealer hit?
-  #           deal card
-  #   compare hands (determine winner)
-  #   show winning or losing message
-  #   add winnings to player purse
-  #   play again?
-  #     loop start a round
-  #   exit game
+### A ROUND STARTS HERE #TODO
+
+  def build_deck
+    deck = Deck.new  
+  end
+
+  def place_a_bet
+    system "clear"
+    players.each do |player|
+      puts "#{player.name} has #{player.purse.amount} bitcoins."
+      print "#{player.name}, how many bitcoins do you want to bet?> "
+      player.bet = gets.chomp.to_i
+
+      if player.bet.class == Fixnum # TODO - WRONG. SHOULD CHECK NUMERALITY
+        if player.purse.amount - player.bet < 0
+          puts "Sorry! You don't have enough money to make that bet."
+          puts "Please bet #{player.purse.amount} bitcoins or less."
+          place_a_bet
+        else
+          puts "#{player.name} bets #{player.bet} bitcoins!"
+          player.purse.amount -= player.bet
+          puts "#{player.name}'s purse is now #{player.purse}."
+          puts
+        end
+      else
+        puts "SORRY! Only numbered bets are allowed." # TODO - DOESN'T WORK
+        place_a_bet # TODO - DOESNT WORK WELL
+      end
+    end
+  end
+
+  def deal_hands
+    players.each do |player|
+      player.add_card(deck.deal_card)
+      player.add_card(deck.deal_card)
+    end
+    dealer.add_card(deck.deal_card)
+    dealer.add_card(deck.deal_card)
+  end
+
+  def show_player_hands
+    system "clear"
+    players.each do |player|
+      player.show_hand
+    end
+    dealer.show_hidden_hand
+    
+  end
+
 
 end
+
+blackjack = Game.new
+blackjack.start
+
+
+
+
+
+
+
+
+
+
+
+
 
 # class Bet
 
@@ -305,25 +380,7 @@ end
 #   end
 # end
 
-# class Hand
 
-#   attr_accessor :hand
-
-#   def initialize
-#     @hand = []
-#   end
-
-#   def is_busted?
-#     value > 21
-#   end
-
-#   # def show_hand
-#   #   hand.each {|card| puts card.long_description}
-#   # end
-#   # inherit from Deck? true: A hand is a small deck attached to a player.
-#   # if hand value > 21 player loses
-
-#   # a hand belongs to a player or dealer
 
 #   ### POSSIBLE METHODS ###
 
